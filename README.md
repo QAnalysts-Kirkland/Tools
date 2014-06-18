@@ -60,7 +60,7 @@ Other debug flags should be added to this script as they are discovered.
 
 ## logit.sh
 
-Begins recording a logcat ( adb logcat -v threadtime ) saving it to a file ~/log/logcat_date_time_name.txt (log folder in the userâs home directory) The <name> portion in the command is optional.
+Begins recording a logcat ( adb logcat -v threadtime ) saving it to a file ~/log/logcat_date_time_name.txt (log folder in the user's home directory) The < name > portion in the command is optional.
 Automatically reconnects and resumes when connection with the device is lost. Also spawns a new window showing the current log. Much more lightweight than loading eclipse and it automatically saves all logs so nothing is ever lost. You should clean your log folder every now and then, though.
 
 ### Usage:
@@ -145,7 +145,7 @@ Generates a file of the specified size full of random garbage.
 Usage: ./genfile.sh <size_in_mb> <filename>
 
 Example: ./genfile.sh 10 ~/Desktop/file.txt will generate a 10mb file named 'file.txt' on the desktop. 
-Directing to a drive and using a mb count higher than the driveâs capacity will fill up the drive. 
+Directing to a drive and using a mb count higher than the drive's capacity will fill up the drive. 
 
 WARNING: This program will not ask you twice! 
 Linux will let you fill up your hard drive if you tell it to!
