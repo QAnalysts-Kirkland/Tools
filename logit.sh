@@ -1,10 +1,13 @@
 #!/bin/bash
-LOOP=0
-if [ -n $1 ]; then
-  TITLE="_$1"
-else
-  TITLE=""
-fi
+###################################################################
+# Author: Lionel Mauritson                                        #
+# Email: lionel@secretzone.org                                    #
+# Contributors:                                                   #
+#                                                                 #
+# Last updated: 6/18/2014                                         #
+###################################################################
+
+TITLE=""
 
 function Color_Init {
 #Debug "Color_Init"
@@ -49,6 +52,7 @@ TIME=$(date +%Y%m%d_%H:%M:%S)
 }
 
 function Main_Loop {
+  local LOOP=0
   echo "Starting... Make sure device is connected."
   adb wait-for-device
   Get_Time
@@ -74,7 +78,37 @@ function Main_Loop {
   done
 }
 
+function Show_Usage {
+echo " 
+-n <title> | Add a name to the log
+-c         | Clears the back log before starting"
+
+}
+
+function Get_Args { #Get flags for defining behavior
+  while getopts :n:c opt; do
+    case $opt in
+    n) TITLE="_${OPTARG}"
+    ;;
+    c) Clear_Old_Log
+    ;;
+    *) Show_Usage
+    ;;
+    esac
+  done
+  
+}
+
+
+
+function Clear_Old_Log {
+  echo "Clearing log"
+  adb logcat -c
+}
+
+
 Color_Init
+Get_Args "$@"
 File_Setup
 Print_Info
 Main_Loop
