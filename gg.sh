@@ -3,6 +3,14 @@
 # This script allows you to stay in the top builds folder and drag
 # drop the folder instead of going in and changing to the right
 # directory, chmod-ing, etc.  
+###################################################################
+# Author: Lionel Mauritson                                        
+# Email: lionel@secretzone.org               
+# Contributors:
+# Last updated: 6/24/2014 by Lionel Mauritson                               
+# Uses bug2.sh for variables if it is available
+###################################################################
+
 clear
 
 #SET TO 1 TO SEE DEBUG OUTPUT
@@ -14,14 +22,17 @@ FLAG=$2 #The second argument. The flag indicating the flash file to use.
 RESULT="Incomplete" #Default analytic results to incomplete and change it later if the flash is successful.
 REASON="Interrupted" #Default failure reason to interrupted and change it later if the flash is successful.
 DEBUG_LOG="" #Initialize the debug log for analytics
+SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 #------------------------------------------------------------------#
 
 
 
 function Get_Opts {
-while getopts :d opt; do
+while getopts :dv opt; do
   case $opt in
   d) ADB_DEBUG=1
+  ;;
+  v) DEBUG=1
   ;;
   *)
   ;;
@@ -94,7 +105,7 @@ function Cleanup { #Delete the temp directory once we are done with it
 
 function Get_Mod_Date { #Get the date this script was last modified for analytics
   Debug "Get_Mod_Date"
-  SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
+
   MODDATE=$(stat -c %y ${SCRIPTPATH})
   MODDATE=${MODDATE%% *}
 }
@@ -140,6 +151,7 @@ function Show_help { #Show the how to use screen
   echo -e "${LBLUE}tf${RESTORE} : Use  ${LGREEN}${TARAKO_FLASH##*/} $TARAKO_FLAGS        ${LYELLOW}(For Tarako devices)${RESTORE}"
   echo -e "${LBLUE}nf${RESTORE} : Use  ${LGREEN}${NAOKI_FLASH##*/} $NAOKI_FLAGS      ${LYELLOW}(Fixes 'no space' error)${RESTORE}"
   echo -e "${LBLUE}nx${RESTORE} : Use  ${LGREEN}${NEXUS_FLASH##*/} $NEXUS_FLAGS    ${LYELLOW}(For Nexus 4)${RESTORE}"
+  echo -e "\nYou can also use 'last' in place of a build folder to use the previously used build folder (if it exists)."
   echo -e "${LYELLOW}Do not use spaces in your path!${RESTORE}"
 }
 
@@ -257,6 +269,15 @@ if [ -e $TARAKO_FLASH ]; then
 
 #-----------VALIDITY_CHECKS---------------#
 
+function Check_For_Last { #See if there is a previous build we can use
+  if [ $DROP_DIR == 'last' ]; then
+    if [ -e ~/log/last_gg.txt ]; then
+      DROP_DIR=$(cat ~/log/last_gg.txt)
+      echo "Using previous build folder: $DROP_DIR"
+     fi
+  fi
+}
+
 function Check_Validity { #Verify the validity of the dropped directory and flags
 Debug "Check_Validity"
 
@@ -264,6 +285,8 @@ Debug "Check_Validity"
     Show_help
     DIE "No path specified"
   fi
+  
+  Check_For_Last
 
   if [ ! -e $DROP_DIR ];then
     Show_help
@@ -295,6 +318,8 @@ fi
     Show_help
     DIE "Invalid path"
   fi
+  
+  
 }
 
 function Check_Dir { #Search for the build files in the directory
@@ -305,7 +330,11 @@ function Check_Dir { #Search for the build files in the directory
   fi
   
   DIR=""
-
+  
+  if [ -e ~/log ]; then
+    echo $DIR > ~/log/last_gg.txt ]
+  fi
+  
   if [ -e $DROP_DIR/b2g-distro ]; then
     DIR=$DROP_DIR/b2g-distro
   fi
@@ -504,10 +533,25 @@ function Check_GG { #Check for and grab the correct flash file and place it in t
   fi
 }
 
+function Save_Build_Location { #Save the location of the last used build
+
+    if [ -e ~/log ]; then
+      if [ -e ~/log/last_gg.txt ]; then
+        Debug "Removing old last_gg.txt"
+        rm ~/log/last_gg.txt
+      fi
+      Debug "Saving last build: $DIR"
+      echo "$DIR" &> ~/log/last_gg.txt
+    fi
+}
+
 function Flash { #Call the selected flash file
   Debug "Flash"
   #DIE "test"
   Debug "Dir: $DIR"
+  
+  Save_Build_Location
+  
   chmod +x ./$FLASH_FILE_NAME_ONLY
   echo -e "Make sure device is connected..."
   adb wait-for-device
@@ -525,6 +569,7 @@ function Get_Device_Type { #Get the device type and convert it to what we know i
   BURI="msm7627a"
   OPEN_C="Open C"
   FLAME="Flame"
+  FLAME2="flame"
   TARAKO="sp6821a"
   LEO="LG-D300f"
   NEXUS4="AOSP on Mako"
@@ -544,6 +589,10 @@ function Get_Device_Type { #Get the device type and convert it to what we know i
     KNOWN_DEVICE=1
   fi  
   if [[ $DEVICE == *$FLAME* ]]; then
+    DEVICE="Flame"
+    KNOWN_DEVICE=1
+  fi
+  if [[ $DEVICE == *$FLAME2* ]]; then
     DEVICE="Flame"
     KNOWN_DEVICE=1
   fi
@@ -636,16 +685,20 @@ Debug "Get_Build_Info"
 
 function Print_Info { #Print basic info about the build we just flashed
   Debug "Print_Info"
-  Get_Build_Info
-  echo -e "${LBLUE}--------------------------------------------------"
-  echo -e "Environmental Variables:"
-  echo -e "Device: $DEVICE"
-  echo -e "BuildID: $BID"
-  echo -e "Gaia: $GAIA"
-  echo -e "Gecko: $GECKO"
-  echo -e "Version: $VERZ"
-  echo -e "--------------------------------------------------${RESTORE}"
-
+  Debug $SCRIPTPATH
+  if [ -e $SCRIPTPATH/bug2.sh ]; then
+    $SCRIPTPATH/bug2.sh -qt
+  else
+    Get_Build_Info
+    echo -e "${LBLUE}--------------------------------------------------"
+    echo -e "Environmental Variables:"
+    echo -e "Device: $DEVICE"
+    echo -e "BuildID: $BID"
+    echo -e "Gaia: $GAIA"
+    echo -e "Gecko: $GECKO"
+    echo -e "Version: $VERZ"
+    echo -e "--------------------------------------------------${RESTORE}"
+  fi
 }
 
 #-----------------------------------------#
