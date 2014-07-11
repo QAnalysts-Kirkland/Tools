@@ -1,13 +1,22 @@
 #!/bin/bash
+
+###################################################################
+# Author: Lionel Mauritson                                        
+# Email: lionel@secretzone.org 
+# Contributors: Jayme Mercado
+# Last updated: 6/25/2014  by Lionel Mauritson
+# Last change: Added a note that the firmware version is not auto
+# detected. Minor formatting changes.
+###################################################################
+
 DEBUG=0
-clear
+
+
 ##########################Initialize###############################
+
 function Init_Variables { #Initialise variables 
   Debug "Init_Variables"
-  Color_Init
-  Pick_Text_App
-  Create_Temp_Directory
-  DEF="${LBLUE}<${RESTORE}"
+  DISABLE_CLEAR=0
   HIDE_EDITOR=0
   USE_DIRECTORY=0
   QUICK=0
@@ -21,6 +30,17 @@ function Init_Variables { #Initialise variables
   GUESSED_DEVICE=""
   GUESSED_VERSION=""
   FIRMWARE=""
+  APP_INI=""
+  APP_ZIP=""
+  SKIP_REPORT=0
+  DIR=""
+  SIMPLE=0
+  Color_Init
+  DEF="${LBLUE}<${RESTORE}"
+  Pick_Text_App
+  Create_Temp_Directory
+  
+  return 0
 }
 
 function Create_Temp_Directory { #Create a temporary place to store the files we pull / extract
@@ -32,7 +52,7 @@ function Create_Temp_Directory { #Create a temporary place to store the files we
 function Pick_Text_App { #Check if the user has scite, if not use gedit
   Debug "Pick_Text_App"
   TEXT_APP="gedit"
-  command -v scite >/dev/null 2>&1 && 
+  command -v scite > /dev/null 2>&1 && 
   TEXT_APP="scite" || 
   TEXT_APP="gedit"
   
@@ -63,29 +83,41 @@ function Color_Init { #Sets up color variables to use later
   LPURPLE='\033[01;35m'
   LCYAN='\033[01;36m'
   WHITE='\033[01;37m'
-  Debug "Color_Init"
   #echo -e "${GREEN}Hello ${CYAN}THERE${RESTORE} "
   return 0 # Success
 }
 
 function Get_Args { #Get flags for defining behavior
 Debug "Get_Args"
-  while getopts :td:q opt; do
+  while getopts :tvd:qvg opt; do
     case $opt in
     t) HIDE_EDITOR=1
     ;;
     d) USE_DIRECTORY=1
-      DROP_DIR=${OPTARG}
+       DROP_DIR=${OPTARG}
     ;;
     q) QUICK=1
+       SKIP_REPORT=1
     ;;
     v) DEBUG=1
+       DISABLE_CLEAR=1
+    ;;
+    g) SIMPLE=1 #Only show gaia and gecko and don't clear the screen
+       SKIP_REPORT=1
+       DISABLE_CLEAR=1
     ;;
     *) Show_Usage
     ;;
     esac
   done
   
+}
+
+function Do_Clear {
+if [ $DISABLE_CLEAR -eq 0 ]; then
+  clear
+fi
+
 }
 
 function Choose_Work_Path { #Choose whether to get files from the device or from a folder
@@ -107,9 +139,8 @@ function Start_ADB { #Connects to the device
   echo "Found device" &&
   return 0
 }
+
 ###################################################################
-
-
 
 
 #####################DEBUG & ERROR HANDLING########################
@@ -137,7 +168,8 @@ Flags:
 -t       :       Don't show the bug template
 -d <dir> :       Get bug variables from a directory
 -q       :       Quick (Auto select defaults if possible)
--v       :       Verbose (Shows debug progress messages)"
+-v       :       Verbose (Shows debug progress messages)
+-g       :       Show only gaia and gecko at the end"
 DIE
 }
 ###################################################################
@@ -168,6 +200,14 @@ function Find_Build_Location { #From the build given, determine where the actual
   fi
   
   if [ -e $DROP_DIR/gaia ]; then
+    DIR=$DROP_DIR
+  fi
+  
+  if [ -e $DROP_DIR/gaia.zip ]; then
+    DIR=$DROP_DIR
+  fi
+  
+  if [ -e $DROP_DIR/b2g*tar.gz ]; then
     DIR=$DROP_DIR
   fi
   
@@ -211,12 +251,13 @@ function Pull_ApplicationINI_From_Device { #Pull application.ini from the device
 
 function Extract_Commitfile_From_GaiaZip { #Extract commitfile.txt from gaia.zip OR search for it in the build directory
 Debug "Extract_Commitfile_From_GaiaZip"
-    if [[ -e $DIR/gaia*.zip ]]; then
-    unzip -o -u $DIR/gaia*.zip gaia/profile/webapps/settings.gaiamobile.org/application.zip -d $TEMP_DIR 
+    if [ -e $DIR/gaia.zip ]; then
+    unzip -o -u $DIR/gaia.zip gaia/profile/webapps/settings.gaiamobile.org/application.zip -d $TEMP_DIR > /dev/null
     APP_ZIP=$TEMP_DIR/gaia/profile/webapps/settings.gaiamobile.org/application.zip 
+    Debug "APP_INI: $APP_ZIP"
     return 0
   else
-    if [[ -e $DIR/gaia/profile/webapps/settings.gaiamobile.org/application.zip  ]]; then
+    if [ -e $DIR/gaia/profile/webapps/settings.gaiamobile.org/application.zip ]; then
       APP_ZIP=$DIR/gaia/profile/webapps/settings.gaiamobile.org/application.zip
     else
       GAIA="Unknown"
@@ -230,7 +271,7 @@ function Get_Gaia_Version_From_Commitfile { #Read the gaia version from the comm
   Debug "Get_Gaia_Version_From_Commitfile"
   Debug "APP_ZIP: $APP_ZIP"
   if [[ -e $APP_ZIP ]]; then
-    unzip -FF $APP_ZIP resources/gaia_commit.txt -d $TEMP_DIR # &&
+    unzip -FF $APP_ZIP resources/gaia_commit.txt -d $TEMP_DIR > /dev/null
     COMMIT_FILE=$TEMP_DIR/resources/gaia_commit.txt
     Debug "ls: $(ls)"
   else
@@ -252,19 +293,38 @@ function Get_Gaia_Version_From_Commitfile { #Read the gaia version from the comm
 function Extract_ApplicationINI_From_B2GTar { #Extract application.ini from the b2g*tar.gz
 
 Debug "Extract_ApplicationINI_From_B2GTar"
-  if [[ -e $DIR/b2g*.tar.gz ]]; then
+
+  if [ -e $DIR/b2g*tar.gz ]; then
+    TAR_LOC="$DIR/$(ls | grep tar.gz)"
+    Debug "TAR_LOC: $TAR_LOC"
+    
     cd $TEMP_DIR
-    tar -zxvf $DIR/b2g*.tar.gz b2g/application.ini 
+    tar --extract --file=$TAR_LOC b2g/application.ini > /dev/null || Debug "Couldn't find b2g*tar.gz."
+    #tar -zxvf $DIR/b2g*.tar.gz b2g/application.ini #$TEMP_DIR || Debug "Issue extracting b2g"
     cd $DIR
-    APP_INI=$TEMP_DIR/b2g/application.ini 
+    
+    if [ -e $TEMP_DIR/b2g/application.ini ]; then
+      APP_INI=$TEMP_DIR/b2g/application.ini 
+      return 0
+    else
+      APP_INI=""
+    fi
+  else
+    APP_INI=""
+  fi
+  
+  Debug  "Checking for b2g/application.ini"
+  if [[ -e $DIR/b2g/application.ini ]]; then
+    APP_INI=$DIR/b2g/application.ini
     return 0
   else
-    if [[ -e $DIR/b2g/application.ini ]]; then
-      APP_INI=$DIR/b2g/application.ini
-    else
-      GECKO="Unknown"
-      return 1
-    fi
+    APP_INI=""
+  fi
+  
+  if [ -z $APP_INI ]; then
+    Debug "Couldn't find b2g/application.ini either"
+    GECKO="Unknown"
+    return 1
   fi
 
 }
@@ -302,9 +362,13 @@ Debug "Get_Gecko_From_ApplicationINI"
 function Get_BuildID_From_ApplicationINI { #Read the Build ID from application.ini
 
   Debug "Get_BuildID_From_ApplicationINI"
-  for b in BuildID; do
-      BUILD_ID=$(grep "^ *$b" $APP_INI | sed "s,.*=,,g")
-  done  
+  if [[ -e $APP_INI ]]; then
+    for b in BuildID; do
+        BUILD_ID=$(grep "^ *$b" $APP_INI | sed "s,.*=,,g") || BUILD_ID="Unknown"
+    done  
+  else
+    BUILD_ID="Unknown"
+  fi
 
   if [ -z "$BUILD_ID" ]; then
     BUILD_ID="Unknown"
@@ -315,6 +379,7 @@ function Get_Firmware_From_Device_Name { #Determine which firmware list to choos
   Debug "Get_Firmware_From_Device_Name"
   Print_Progress_Info
   #DETECTED_FIRMWARE=`adb shell getprop ro.build.inner.version`
+  echo -e "${LYELLOW}Please note that firmware is NOT auto detected at this time. \nIt defaults to the latest, but that may not be correct${RESTORE}"
   case $DEVICE in
   'Buri') Choose_Buri_Firmware;;
   'Leo') Choose_Leo_Firmware;;
@@ -328,9 +393,13 @@ function Get_Firmware_From_Device_Name { #Determine which firmware list to choos
 
 function Get_Version_From_ApplicationINI { #Get the build version from application.ini
   Debug "Get_Version_From_ApplicationINI"
+  if [[ -e $APP_INI ]]; then
   for d in Version; do
     DETECTED_VERSION=$(grep "^ *$d" $APP_INI | sed "s,.*=,,g")
   done
+  else
+  DETECTED_VERSION="Unknown"
+  fi
 }
 
 function Get_Branch_From_Version { #Get the branch number from a given build version number
@@ -339,80 +408,81 @@ Debug "Get_Branch_From_Version"
   VERSION_11="18.0"
   VERSION_12="26.0"
   VERSION_13="28.0"
-  VERSION_TK="28.1"
+  VERSION_TK="28.1" #Tarako
   VERSION_14="30.0"
-  VERSION_20="32."
-  VERSION_21="33."
-  VERSION_21B="34."
-  VERSION_22="35."
-  VERSION_22B="36."
-  VERSION_23="37."
+  VERSION_20="32.0a2"
+  VERSION_21="33.0"
+  VERSION_21B="34.0"
+  VERSION_22="35.0"
+  VERSION_22B="36.0"
+  VERSION_23="37.0"
   
-  CURRENT_MASTER="2.1"
+  #CURRENT_MASTER="2.1"
   
   KNOWN_VERSION=0
   
-  if [[ $1 == *$VERSION_11* ]]; then
+  if [[ $1 == *$VERSION_11 ]]; then
     GUESSED_VERSION="1.1"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_12* ]]; then
+  if [[ $1 == *$VERSION_12 ]]; then
     GUESSED_VERSION="1.2"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_13* ]]; then
+  if [[ $1 == *$VERSION_13 ]]; then
     GUESSED_VERSION="1.3"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_TK* ]]; then
+  if [[ $1 == *$VERSION_TK ]]; then
     GUESSED_VERSION="1.3T"
     KNOWN_VERSION=1
   fi  
   
-  if [[ $1 == *$VERSION_14* ]]; then
+  if [[ $1 == *$VERSION_14 ]]; then
     GUESSED_VERSION="1.4"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_20* ]]; then
+  if [[ $1 == *$VERSION_20 ]]; then
     GUESSED_VERSION="2.0"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_21* ]]; then
+  if [[ $1 == *$VERSION_21 ]]; then
     GUESSED_VERSION="2.1"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_21B* ]]; then
+  if [[ $1 == *$VERSION_21B ]]; then
     GUESSED_VERSION="2.1"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_22* ]]; then
+  if [[ $1 == *$VERSION_22 ]]; then
     GUESSED_VERSION="2.2"
     KNOWN_VERSION=1
   fi
   
-  if [[ $1 == *$VERSION_22B* ]]; then
+  if [[ $1 == *$VERSION_22B ]]; then
     GUESSED_VERSION="2.2"
     KNOWN_VERSION=1
   fi
-  if [[ $1 == *$VERSION_23* ]]; then
+  if [[ $1 == *$VERSION_23 ]]; then
     GUESSED_VERSION="2.3"
     KNOWN_VERSION=1
   fi
   
-  if [[ $GUESSED_VERSION == $CURRENT_MASTER ]]; then
-    GUESSED_VERSION="$GUESSED_VERSION - Master"
+ #if [[ $GUESSED_VERSION == $CURRENT_MASTER ]]; then
+ #   GUESSED_VERSION="$GUESSED_VERSION - Master"
+  #fi
+  if [ $DETECTED_VERSION != "Unknown" ]; then
+    if [ $KNOWN_VERSION -eq 0 ]; then
+      GUESSED_VERSION="Master"
+    fi
   fi
-  
-  if [ $KNOWN_VERSION -eq 0 ]; then
-    GUESSED_VERSION="Master"
-  fi  
 
 }
 
@@ -471,10 +541,7 @@ function Get_Device_Type { #Get the device type from the device and convert it i
   Debug "Guessed Device: $GUESSED_DEVICE"
 }
 
-
 ###################################################################
-
-
 
 
 #########################GET_USER_INPUT############################
@@ -497,8 +564,9 @@ function Choose_Flame_Firmware { #Ask the user which flame firmware to use, prov
   FLAME_FIRMWARE_2="v10F-3"
   FLAME_FIRMWARE_3="v10G-2"
   FLAME_FIRMWARE_4="v121-2"
+  FLAME_FIRMWARE_5="v122"
   
-  DEFAULT_FIRMWARE=$FLAME_FIRMWARE_4
+  DEFAULT_FIRMWARE=$FLAME_FIRMWARE_5
   
   if [ $QUICK -eq 1 ]; then
     FIRMWARE=$DEFAULT_FIRMWARE
@@ -506,13 +574,14 @@ function Choose_Flame_Firmware { #Ask the user which flame firmware to use, prov
   fi
   
   echo -e "Which firmware version? Defaults to ${LBLUE}$DEFAULT_FIRMWARE${RESTORE} if left blank"
-  echo -e "1) $(Is_Def $FLAME_FIRMWARE_4)\n2) $(Is_Def $FLAME_FIRMWARE_3)\n3) $(Is_Def $FLAME_FIRMWARE_2)\n4) $(Is_Def $FLAME_FIRMWARE_1)"
+  echo -e "1) $(Is_Def $FLAME_FIRMWARE_5)\n2) $(Is_Def $FLAME_FIRMWARE_4)\n3) $(Is_Def $FLAME_FIRMWARE_3)\n4) $(Is_Def $FLAME_FIRMWARE_2)\n5) $(Is_Def $FLAME_FIRMWARE_1)"
   read FLAME_FIRMWARE_CHOICE
   case $FLAME_FIRMWARE_CHOICE in
-    1) FIRMWARE=$FLAME_FIRMWARE_4 ;;
-    2) FIRMWARE=$FLAME_FIRMWARE_3 ;;
-    3) FIRMWARE=$FLAME_FIRMWARE_2 ;;
-    4) FIRMWARE=$FLAME_FIRMWARE_1 ;;
+    1) FIRMWARE=$FLAME_FIRMWARE_5;;
+    2) FIRMWARE=$FLAME_FIRMWARE_4 ;;
+    3) FIRMWARE=$FLAME_FIRMWARE_3 ;;
+    4) FIRMWARE=$FLAME_FIRMWARE_2 ;;
+    5) FIRMWARE=$FLAME_FIRMWARE_1 ;;
     *) if [ -z $FLAME_FIRMWARE_CHOICE ]; then
           FIRMWARE=$DEFAULT_FIRMWARE   #DEFAULT GOES HERE
        else
@@ -584,6 +653,11 @@ function Choose_Version { #Ask the user to confirm the version, or provide their
     echo -e "Branch detected as ${LBLUE}$GUESSED_VERSION ($DETECTED_VERSION)${RESTORE}"
     echo -e "Leave blank to use this or enter the correct branch below."
   else
+    if [ $QUICK -eq 1 ]; then
+      VERSION="($GUESSED_VERSION)"
+      VERSION_2="$GUESSED_VERSION"
+      return 0
+    fi
     echo -e "Unknown branch detected for ${LBLUE}$DETECTED_VERSION${RESTORE}"
     echo -e "Leave blank or enter the correct branch below."
   fi
@@ -644,9 +718,7 @@ function Get_User_Agent { #Remind the user to get the User Agent string.
   Debug "Get_User_Agent"
   echo -e "Please get the ${LBLUE}User Agent${RESTORE} information by going to ${LYELLOW}www.whatsmyuseragent.com on the device${RESTORE} and include it in the bug${RESTORE}"
 }
-#--------------------------------
 
-#--------------------------------
 ####################################################################
 
 ############################OUTPUT##################################
@@ -688,42 +760,58 @@ function Generate_Bug_Template { #Creates the bug template and opens it for the 
 
 function Print_Progress_Info { #Print a list at the top of the screen to show the current progress
   Debug "Print_Progress_Info"
-  clear
-  #Check_Unknowns
-  echo -e "--------------------------------------------------"
-  echo -e "Device:   ${LBLUE}$DEVICE${RESTORE}"
-  echo -e "Branch:   ${LBLUE}$VERSION ${RESTORE}"
-  echo -e "Version:  ${LBLUE}$DETECTED_VERSION${RESTORE}"
-  echo -e "Firmware: ${LBLUE}$FIRMWARE${RESTORE}"
-  echo -e "--------------------------------------------------"
-
+  Do_Clear
+  if [ $SKIP_REPORT -eq 0 ]; then
+    #Check_Unknowns
+    echo -e "--------------------------------------------------"
+    echo -e "Device:   ${LBLUE}$DEVICE${RESTORE}"
+    echo -e "Branch:   ${LBLUE}$VERSION ${RESTORE}"
+    echo -e "Version:  ${LBLUE}$DETECTED_VERSION${RESTORE}"
+    echo -e "Firmware: ${LBLUE}$FIRMWARE${RESTORE}"
+    echo -e "--------------------------------------------------"
+  fi
 }
 
 function Print_Full_Info { #Print all the version info in the terminal (Should match what is in the bug template)
 Debug "Print_Full_Info"
-clear
-echo -e "--------------------------------------------------"
-echo -e "Environmental Variables:"
-echo -e "Device: ${LBLUE}$DEVICE $VERSION_2${RESTORE}"
-echo -e "BuildID: ${LBLUE}$BUILD_ID${RESTORE}"
-echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}"
-echo -e "Gecko: ${LBLUE}$GECKO${RESTORE}"
-echo -e "Version: ${LBLUE}$DETECTED_VERSION $VERSION ${RESTORE}"
-echo -e "Firmware Version: ${LBLUE}$FIRMWARE${RESTORE}"
-echo -e "--------------------------------------------------"
+Do_Clear
+
+  
+if [ $SIMPLE -eq 0 ]; then
+  echo -e "--------------------------------------------------"
+  echo -e "Environmental Variables:"
+  echo -e "Device: ${LBLUE}$DEVICE $VERSION_2${RESTORE}"
+  echo -e "BuildID: ${LBLUE}$BUILD_ID${RESTORE}"
+fi
+  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}\nGecko: ${LBLUE}$GECKO${RESTORE}"
+if [ $SIMPLE -eq 0 ]; then
+  echo -e "Version: ${LBLUE}$DETECTED_VERSION $VERSION ${RESTORE}"
+  echo -e "Firmware Version: ${LBLUE}$FIRMWARE${RESTORE}"
+  echo -e "--------------------------------------------------"
+fi
+
+if [ $SIMPLE -eq 0 ]; then
+  if [ $QUICK -eq 1 ]; then
+    echo -e "${LYELLOW}Please note that the firmware version is NOT auto detected.${RESTORE}"
+  fi
+fi
 }
 
 function Print_Info_From_Directory { #Print the info we got from the build directory
   Debug "Print_Info_From_Directory"
-  clear
-  echo -e "Directory: ${LBLUE}$DROP_DIR${RESTORE}"
-  echo -e "--------------------------------------------------"
-  echo -e "Environmental Variables"
-  echo -e "BuildID: ${LBLUE}$BUILD_ID${RESTORE}"
-  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}"
-  echo -e "Gecko: ${LBLUE}$GECKO${RESTORE}"
-  echo -e "Version: ${LBLUE}$DETECTED_VERSION ($GUESSED_VERSION)${RESTORE}"
-  echo -e "--------------------------------------------------"
+  Do_Clear
+  if [ $SIMPLE -eq 0 ]; then
+    echo -e "Directory: ${LBLUE}$DROP_DIR${RESTORE}"
+    echo -e "--------------------------------------------------"
+    echo -e "Environmental Variables"
+    echo -e "BuildID: ${LBLUE}$BUILD_ID${RESTORE}"
+  fi
+  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}\nGecko: ${LBLUE}$GECKO${RESTORE}"
+  if [ $SIMPLE -eq 0 ]; then
+    echo -e "Version: ${LBLUE}$DETECTED_VERSION ($GUESSED_VERSION)${RESTORE}"
+    echo -e "--------------------------------------------------"
+  fi
+  
 
 }
 
@@ -733,6 +821,7 @@ function Print_Info_From_Directory { #Print the info we got from the build direc
 ##############################MAIN##################################
 
 function Get_Vars_From_Device { #Run the commands to get variables from a device
+
   DIR=$TEMP_DIR
   Start_ADB
   Pull_ApplicationZip_From_Device
@@ -744,15 +833,18 @@ function Get_Vars_From_Device { #Run the commands to get variables from a device
   Print_Full_Info
   Get_User_Agent
   Generate_Bug_Template
+
 }
 
 function Get_Vars_From_Folder { #Run the commands to get variables from a given directory
-  Find_Build_Location
-  Extract_ApplicationINI_From_B2GTar
-  Extract_Commitfile_From_GaiaZip
+
+    Find_Build_Location
+    Extract_ApplicationINI_From_B2GTar
+    Extract_Commitfile_From_GaiaZip
     Main
-  Print_Info_From_Directory
-  Get_User_Agent
+    Print_Info_From_Directory
+    Get_User_Agent
+
 }
 
 function Main { #Run the commands common to both options above
@@ -765,8 +857,9 @@ function Main { #Run the commands common to both options above
 
 }
 
-Init_Variables
+Init_Variables &&
 Get_Args "$@"
+Do_Clear
 Choose_Work_Path
 
 
