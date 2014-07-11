@@ -66,7 +66,7 @@ Automatically reconnects and resumes when connection with the device is lost. Al
 ### Usage:
 
 ```
-Usage: ./logit.sh <name>
+Usage: ./logit.sh -n <name>
 
 ```
 
@@ -92,7 +92,7 @@ Runs both logit.sh and firewatch.sh. Basically a shortcut to running both script
 ### Usage:
 
 ```
-Usage: ./logboth <name>
+Usage: ./logboth -n <name>
 ```
 
 ----
