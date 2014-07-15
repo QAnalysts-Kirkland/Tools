@@ -7,7 +7,7 @@
  *
  * To make a manual change to preferences, you can visit the URL about:config
  */
-
+user_pref("app.update.url.override", "https://aus4.mozilla.org/update/3/B2G/32.0/20140709000201/flame/en-US/nightly/Boot2Gecko%202.1.0.0-prerelease/default/default/update.xml?force=1");
 user_pref("app.reportCrashes", true);
 user_pref("app.update.custom", "1527c697-6b9d-46a8-9e40-dd5d91a28305");
 user_pref("app.update.lastUpdateTime.background-update-timer", 1404613483);
