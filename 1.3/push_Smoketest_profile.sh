@@ -23,9 +23,6 @@ adb push misc/wifi/wpa_supplicant.conf /data/misc/wifi/wpa_supplicant.conf &&
 echo "pushing internal storage..."
 adb push sdcard0 /storage/sdcard0 &&
 
-echo "erasing cache"
-adb shell rm -r /cache/* &&
-
 adb shell start b2g &&
 
 echo "done."
