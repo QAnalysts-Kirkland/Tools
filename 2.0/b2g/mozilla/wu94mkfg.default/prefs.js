@@ -7,11 +7,12 @@
  *
  * To make a manual change to preferences, you can visit the URL about:config
  */
-user_pref("app.update.url.override", "https://aus4.mozilla.org/update/3/B2G/32.0/20140709000201/flame/en-US/nightly/Boot2Gecko%202.1.0.0-prerelease/default/default/update.xml?force=1");
+
 user_pref("app.reportCrashes", true);
 user_pref("app.update.custom", "1527c697-6b9d-46a8-9e40-dd5d91a28305");
-user_pref("app.update.lastUpdateTime.background-update-timer", 1404613483);
-user_pref("app.update.lastUpdateTime.user-agent-updates-timer", 0);
+user_pref("app.update.lastUpdateTime.background-update-timer", 1405467826);
+user_pref("app.update.lastUpdateTime.user-agent-updates-timer", 1405467706);
+user_pref("app.update.url.override", "https://aus4.mozilla.org/update/3/B2G/32.0/20140709000201/flame/en-US/nightly/Boot2Gecko%202.1.0.0-prerelease/default/default/update.xml?force=1");
 user_pref("browser.cache.disk.capacity", 71508);
 user_pref("browser.download.importedFromSqlite", true);
 user_pref("consoleservice.enabled", false);
@@ -20,14 +21,14 @@ user_pref("devtools.debugger.remote-enabled", true);
 user_pref("devtools.eventlooplag.threshold", 100);
 user_pref("dom.mms.requestStatusReport", false);
 user_pref("dom.mms.retrieval_mode", "automatic-home");
-user_pref("dom.mozApps.maxLocalId", 1034);
+user_pref("dom.mozApps.maxLocalId", 1036);
 user_pref("dom.mozApps.used", true);
 user_pref("dom.sms.requestStatusReport", false);
 user_pref("dom.webapps.firstRunWithSIM", false);
-user_pref("gecko.buildID", "20140703000248");
+user_pref("gecko.buildID", "20140715000201");
 user_pref("gecko.mstone", "32.0a2");
-user_pref("general.useragent.updates.lastupdated", "1404772335547");
-user_pref("idle.lastDailyNotification", 1404613570);
+user_pref("general.useragent.updates.lastupdated", "1405467706761");
+user_pref("idle.lastDailyNotification", 1405467652);
 user_pref("intl.accept_languages", "en-US, en");
 user_pref("layers.composer2d.enabled", true);
 user_pref("layers.simple-tiles", false);
@@ -41,4 +42,4 @@ user_pref("ril.mms.mmsproxy", "proxy.mobile.att.net");
 user_pref("ril.numRadioInterfaces", 2);
 user_pref("ril.radio.disabled", false);
 user_pref("storage.vacuum.last.index", 0);
-user_pref("toolkit.telemetry.previousBuildID", "20140703000248");
+user_pref("toolkit.telemetry.previousBuildID", "20140715000201");

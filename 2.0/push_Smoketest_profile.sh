@@ -18,7 +18,7 @@ echo "pushing profile" &&
 adb push b2g /data/b2g &&
 
 echo "pushing wifi setting..." &&
-adb push misc/wifi/wpa_supplicant.conf /data/misc/wifi/wpa_supplicant.conf &&
+adb push /data/misc/wifi/wpa_supplicant.conf /data/misc/wifi/wpa_supplicant.conf &&
 
 echo "pushing internal storage..." &&
 adb push sdcard0 /storage/sdcard0 &&
