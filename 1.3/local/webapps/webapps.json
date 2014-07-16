@@ -573,7 +573,7 @@
       "manifestHash": "11b92b60a0fc3e86f109d68b44edf7a4",
       "etag": "\"ed2e516580c8fb5317a1d1378f02592dc64c69f0c822b52a1dc17601fdfbd2a7\""
     },
-    "lastCheckedUpdate": 1405030233681,
+    "lastCheckedUpdate": 1405529139572,
     "downloadAvailable": true,
     "downloadSize": 132261,
     "updateManifest": {
@@ -644,7 +644,42 @@
     "installerIsBrowser": false,
     "storeId": "",
     "storeVersion": 0,
-    "role": ""
+    "role": "",
+    "lastCheckedUpdate": 1405529139611,
+    "manifest": {
+      "name": "Facebook",
+      "description": "Facebook helps you connect and share with the people in your life.",
+      "launch_path": "/",
+      "icons": {
+        "16": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yu/r/9a_ZCHI6igB.png",
+        "32": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yO/r/hwIuG_aaRN5.png",
+        "48": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/y9/r/nxIyFtMM33u.png",
+        "128": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yo/r/---VLP2qoii.png",
+        "256": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/yi-h6CNodEW.png"
+      },
+      "developer": {
+        "name": "Facebook",
+        "url": "http://www.facebook.com"
+      },
+      "default_locale": "en",
+      "permissions": {
+        "geolocation": {
+          "description": "Required for check-ins"
+        }
+      },
+      "activities": {
+        "share": {
+          "href": "/home.php",
+          "disposition": "window",
+          "filters": {
+            "type": "image/*"
+          }
+        }
+      },
+      "chrome": {
+        "navigation": true
+      }
+    }
   },
   "{edf6474d-e5cd-4b58-a3fc-6856adf326b6}": {
     "name": "CutTheRope",
@@ -674,6 +709,7 @@
     "installerIsBrowser": false,
     "storeId": "https://marketplace.firefox.com#a22e0277-35bc-434d-9371-1568c75fc726",
     "storeVersion": 1513878,
-    "role": ""
+    "role": "",
+    "lastCheckedUpdate": 1405529139584
   }
 }
