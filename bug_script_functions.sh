@@ -1,5 +1,6 @@
 #!/bin/bash
 # Author: Roland Kunkel
+# Edited: Oliver Nelson
 # Date  : 8/2/2014
 # 
 # Updates:
@@ -12,7 +13,8 @@
 #                    # Provided example for comman syntax / naming conventions
 #         2014-09-12 # Changed the firmware command to work with the KK base, reworked to support older firmware versions as well // flame
 #         2014-09-24 # added shopt -s nocasematch to handle cases where base reports 'flame' instead of 'Flame'
-#         2014-09-29 # removed support for pulling from directory for old builds (1.4 and prior), now plays nice with GG script
+#         2014-09-29 # removed support for old builds (1.4 and prior), now plays nice with GG script
+#	  2014-10-20 # added support for Firmware v184 and v188
 
 #Declare Variables
 MASTER="2.2"
@@ -25,18 +27,17 @@ FIRMWARE=""
 gFIRMWARE="Unknown"
 file_name=""
 
-# Helper function to pull gonk revision ID
 function get_source {
-  adb pull /system/sources.xml sources
   while read line           
   do           
     parse=$(echo $line | cut -c16-27)
     if [[ $parse ==  'device-flame' ]]; then
-      GONK=$(echo $line | cut -c78-116)
+      GONK=$(echo $line | cut -c77-116)
       #echo -e $revision
     fi
   done <'sources'
 }
+
 # Helper for Pull_Device_Info
 # Grabs the application.ini for future file operations
 function Pull_AppIni {
@@ -66,16 +67,19 @@ function Pull_Device_Info {
 function Populate_Branch {
     # Populate Branch
     case $VERSION in
-        *'28.0'*) BRANCH="1.3";;
-        *'30.0'*) BRANCH="1.4";;
-        *'32.0'*) BRANCH="2.0";;
-      *'33.0a1'*) BRANCH="2.1";; # This is the first merge into m-c, partial gaia
-      *'34.0a1'*) BRANCH="2.1";; # Full 2.1 Gaia
-      *'34.0a2'*) BRANCH="2.1";; # Full 2.1 Gaia / second branch
-      *'35.0a1'*) BRANCH="2.2";; # Full 2.2 Gaia
+        *'28.0'*) BRANCH="1.3"; USER_AGENT="Mozilla/5.0 (Mobile; rv:28.0) Gecko/28.0 Firefox/28.0";;
+        *'30.0'*) BRANCH="1.4"; USER_AGENT="Mozilla/5.0 (Mobile; rv:30.0) Gecko/30.0 Firefox/30.0";;
+        *'32.0'*) BRANCH="2.0"; USER_AGENT="Mozilla/5.0 (Mobile; rv:32.0) Gecko/32.0 Firefox/32.0";;
+      *'33.0a1'*) BRANCH="2.1"; USER_AGENT="Mozilla/5.0 (Mobile; rv:33.0) Gecko/33.0 Firefox/33.0";;
+      *'34.0a1'*) BRANCH="2.1"; USER_AGENT="Mozilla/5.0 (Mobile; rv:34.0) Gecko/34.0 Firefox/34.0";;
+      *'34.0a2'*) BRANCH="2.1"; USER_AGENT="Mozilla/5.0 (Mobile; rv:34.0) Gecko/34.0 Firefox/34.0";;
+        *'34.0'*) BRANCH="2.1"; USER_AGENT="Mozilla/5.0 (Mobile; rv:34.0) Gecko/34.0 Firefox/34.0";;
+      *'35.0a1'*) BRANCH="2.2"; USER_AGENT="Mozilla/5.0 (Mobile; rv:35.0) Gecko/35.0 Firefox/35.0";;
+      *'36.0a1'*) BRANCH="2.2"; USER_AGENT="Mozilla/5.0 (Mobile; rv:36.0) Gecko/36.0 Firefox/36.0";;
                *) BRANCH=$gBRANCH;;
     esac
 }
+
 # Grab frunction for directories
 function Grab_From_Directory {
   # Start or print error message
@@ -147,6 +151,8 @@ function Grab_From_Device {
          *'L1TC00011220'*) FIRMWARE="V122";;
 	 *'L1TC00011230'*) FIRMWARE="V123";;
          *'L1TC10011800'*) FIRMWARE="V180";;
+         *'L1TC00011840'*) FIRMWARE="V184";;
+         *'L1TC00011880'*) FIRMWARE="V188";;
          *) echo "Unknown firmware, enter now: (V180)"; 
 	     read FIRMWARE;;
        esac
@@ -163,23 +169,11 @@ function Grab_From_Device {
       DEVICE=$gDEVICE
       FIRMWARE=$gFIRMWARE
   fi
-  # Set User Agent 
-  case $BRANCH in
-    "1.3") USER_AGENT="Mozilla/5.0 (Mobile; rv:28.0) Gecko/28.0 Firefox/28.0";;
-    "1.4") USER_AGENT="Mozilla/5.0 (Mobile; rv:30.0) Gecko/30.0 Firefox/30.0";;
-    "2.0") USER_AGENT="Mozilla/5.0 (Mobile; rv:32.0) Gecko/32.0 Firefox/32.0";;
-    "2.1") USER_AGENT="Mozilla/5.0 (Mobile; rv:34.0) Gecko/34.0 Firefox/34.0";;
-    "2.2") USER_AGENT="Mozilla/5.0 (Mobile; rv:35.0) Gecko/35.0 Firefox/35.0";;
-        *) USER_AGENT="********** ERROR UNKNOWN BRANCH ***********";;
-  esac
   # Get Memory Settings
-  # Get Sources Gonk Revision
-  case $BRANCH in
-    "2.1") get_source;;
-    "2.2") get_source;;
-    *) GONK='Unable to pull gonk with bug script';;
-  esac  
+  # Get Sources Gonk Revision // put '(' ')' around the second part of the or, or the second && with go off
+  adb pull '/system/sources.xml' sources &> /dev/null && get_source || (echo "error pulling gonk" && GONK="Error: Cannot pull sources file")
 
+  
   # Print variables
   echo -e "Environmental Variables:"
   echo -e "----------------------------------------------"
