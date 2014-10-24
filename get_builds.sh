@@ -1,7 +1,9 @@
 #!/bin/bash
 #
 # Author:	Roland Kunkel
-# Date: 	8-12-14
+# Edited:	Oliver Nelson
+# Date: 	8-12-14 -- RK
+#		10-15-14 -- ON
 
 # Purpose:	
 #
@@ -29,12 +31,15 @@
 #               2014-09-26 # now pulls latest 2.0 KK builds
 #               2014-09-26 # no longer re-naming the b2g-folder, trade off BugGUI no longer supports pulling
                            # from the directory for 1.4 prior
+#		2014-10-15 # added support for pulling new 2.1 branch [b2g-34]
+#		2014-10-18 # added function to reduce redundant calls
+#		2014-10-19 # added framework for looping through builds [WIP]
 		
 
 ### Variables
 # Security 
-USER='rkunkel@qanalydocs.com'
-PASS='brwVkDDfEWMdWUHu'
+USER='bzumwalt@qanalydocs.com'
+PASS='w4tNTCGUmVyFkLfB'
 
 # Generic
 BUILDID=''
@@ -46,15 +51,40 @@ FLASH_SCRIPT='/mnt/builds/Needed_Scripts/flash_Gg.sh'
 
 # MC_KK 2.2
 MC_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-central-flame-kk/latest/'
-MC_KK_B2G='b2g-35.0a1.en-US.android-arm.tar.gz'
+MC_KK_B2G='b2g-36.0a1.en-US.android-arm.tar.gz'
+MC_KK_DIR='/mnt/builds/Flame/Flame_KK/2.2/Central' #'$HOME/Desktop/oliverthor/builds/2.2'
 
 # OMC_KK 2.1
 OMC_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-aurora-flame-kk/latest/'
 OMC_KK_B2G='b2g-34.0a2.en-US.android-arm.tar.gz'
+OMC_KK_DIR='/mnt/builds/Flame/Flame_KK/2.1' #'$HOME/Desktop/oliverthor/builds/2.1/aurora'
+
+# B2G-34 2.1 as of 10/10
+B2G34_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-b2g34_v2_1-flame-kk/latest/'
+B2G34_KK_B2G='b2g-34.0.en-US.android-arm.tar.gz'
+B2G34_KK_DIR='/mnt/builds/Flame/Flame_KK/2.1/b2g-34' #'$HOME/Desktop/oliverthor/builds/2.1/b2g-34' 
 
 # LC_KK 2.0
 LC_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-b2g32_v2_0-flame-kk/latest/'
 LC_KK_B2G='b2g-32.0.en-US.android-arm.tar.gz'
+LC_KK_DIR='/mnt/builds/Flame/Flame_KK/2.0' #'$HOME/Desktop/oliverthor/builds/2.0' 
+
+# Build Path Container
+#BUILD_PATHS[0]=	$MC_KK_PATH
+#BUILD_B2GS[0]= 	$MC_KK_B2G
+#BUILD_DIRS[0]=	$MC_KK_DIR	
+
+#BUILD_PATHS[1]=	$OMC_KK_PATH
+#BUILD_B2GS[1]=	$OMC_KK_B2G
+#BUILD_DIRS[1]=	$OMC_KK_DIR
+
+#BUILD_PATHS[2]=	$B2G34_KK_PATH
+#BUILD_B2GS[2]=	$B2G34_KK_B2G
+#BUILD_DIRS[2]=	$B2G34_KK_DIR
+
+#BUILD_PATHS[3]=	$LC_KK_PATH
+#BUILD_B2GS[3]=	$LC_KK_PATH
+#BUILD_DIRS[3]=	$LC_KK_DIR
 
 ### Functions
 # Get file
@@ -72,6 +102,18 @@ function get_tar() {
 function get_zip() {
   curl --anyauth -L -u $USER:$PASS $1/$2 -o $2
   unzip -q $2
+}
+
+# Pull all Build files
+function assemble_build() {
+ #$1 = $BUILD_KK_PATH
+ #$2 = $BUILD_KK_B2G
+  get_tar $1 $2
+  get_zip $1 $GAIA
+  get_zip $1 $IMAGE
+  get_file $1 $SOURCES
+  create_name
+  clean_kk $2 $GAIA $IMAGE $SOURCES
 }
 
 # Create proper name
@@ -106,35 +148,34 @@ function clean_kk() {
 # Timer
 runTime=$(date +"%s")
 
-# Mozila Master Central KK 
-cd '/mnt/builds/Flame/Flame_KK/2.2'
+# Assemble Build Loop
+# get the length of the arrays
+#length=${#BUILD_PATHS[@]}
+# do the loop
+#for ((i=0;i<1;i++)); do
+	#echo ${BUILD_DIRS[i]}
+	#cd ${BUILD_DIRS[i]}
+	#assemble_build ${BUILD_PATH[i]} ${BUILD_B2GS[i]}
+#done
+
+# Mozilla Master Central KK
+cd '/mnt/builds/Flame/Flame_KK/2.2/Central'
 echo "Starting KK v2.2"
-get_tar $MC_KK_PATH $MC_KK_B2G
-get_zip $MC_KK_PATH $GAIA
-get_zip $MC_KK_PATH $IMAGE
-get_file $MC_KK_PATH $SOURCES
-create_name
-clean_kk $MC_KK_B2G $GAIA $IMAGE $SOURCES
+assemble_build $MC_KK_PATH $MC_KK_B2G
+# check for current build in latest
+# if outdated, move latest out and pull newest in
 
-# Mozila Aurora KK 
-cd '/mnt/builds/Flame/Flame_KK/2.1'
-echo "Starting KK v2.1"
-get_tar $OMC_KK_PATH $OMC_KK_B2G
-get_zip $OMC_KK_PATH $GAIA
-get_zip $OMC_KK_PATH $IMAGE
-get_file $OMC_KK_PATH $SOURCES
-create_name
-clean_kk $OMC_KK_B2G $GAIA $IMAGE $SOURCES
 
-# Mozila b2g-32 KK 
+# Mozilla b2g-32 KK
 cd '/mnt/builds/Flame/Flame_KK/2.0'
 echo "Starting KK v2.0"
-get_tar $LC_KK_PATH $LC_KK_B2G
-get_zip $LC_KK_PATH $GAIA
-get_zip $LC_KK_PATH $IMAGE
-get_file $LC_KK_PATH $SOURCES
-create_name
-clean_kk $LC_KK_B2G $GAIA $IMAGE $SOURCES
+assemble_build $LC_KK_PATH $LC_KK_B2G
+
+# Mozilla b2g-34 KK -- 2.1
+cd '/mnt/builds/Flame/Flame_KK/2.1/b2g-34'
+echo "Starting KK v2.1 -- b2g-34"
+assemble_build $B2G34_KK_PATH $B2G34_KK_B2G
+
 
 # End Timer
 currTime=$(date +"%s")
