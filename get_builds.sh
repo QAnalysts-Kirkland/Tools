@@ -34,12 +34,15 @@
 #		2014-10-15 # added support for pulling new 2.1 branch [b2g-34]
 #		2014-10-18 # added function to reduce redundant calls
 #		2014-10-19 # added framework for looping through builds [WIP]
+#		2014-11-25 # reorganizing variables by paths
+#		2014-12-19 # added intro to script to help guide functionality
+#			     user input flow to perform script without arguments given
 		
 
 ### Variables
 # Security 
-USER='bzumwalt@qanalydocs.com'
-PASS='w4tNTCGUmVyFkLfB'
+USER='onelson@qanalydocs.com'
+PASS='xYaUSsyYfyCV98nm'
 
 # Generic
 BUILDID=''
@@ -49,25 +52,38 @@ SOURCES='sources.xml'
 BOOT_IMAGE='/mnt/builds/Needed_Scripts/Assets/boot.img'
 FLASH_SCRIPT='/mnt/builds/Needed_Scripts/flash_Gg.sh'
 
+DIR_LOC=$HOME'/Desktop/builds'
+DIR_SER='/mnt/builds'
+CUR_DIR=$DIR_SER
+#BUILD_ID='latest'
+#string to parse into for build id: 2014/12/2014-12-09-17-01-21/
+
 # MC_KK 2.2
 MC_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-central-flame-kk/latest/'
-MC_KK_B2G='b2g-36.0a1.en-US.android-arm.tar.gz'
-MC_KK_DIR='/mnt/builds/Flame/Flame_KK/2.2/Central' #'$HOME/Desktop/oliverthor/builds/2.2'
+MC_KK_B2G='b2g-37.0a1.en-US.android-arm.tar.gz'
+MC_EN_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-central-flame-kk-eng/latest/'
+#MC_KK_DIR_SER='/mnt/builds/Flame/Flame_KK/2.2/Central'
+#MC_EN_DIR_SER='/mnt/builds/Flame/Flame_KK/2.2/Engineering'
+MC_KK='/Flame/Flame_KK/2.2/Central'
+MC_EN='/Flame/Flame_KK/2.2/Engineering'
 
-# OMC_KK 2.1
-OMC_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-aurora-flame-kk/latest/'
-OMC_KK_B2G='b2g-34.0a2.en-US.android-arm.tar.gz'
-OMC_KK_DIR='/mnt/builds/Flame/Flame_KK/2.1' #'$HOME/Desktop/oliverthor/builds/2.1/aurora'
 
-# B2G-34 2.1 as of 10/10
-B2G34_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-b2g34_v2_1-flame-kk/latest/'
-B2G34_KK_B2G='b2g-34.0.en-US.android-arm.tar.gz'
-B2G34_KK_DIR='/mnt/builds/Flame/Flame_KK/2.1/b2g-34' #'$HOME/Desktop/oliverthor/builds/2.1/b2g-34' 
+# B2G-34 2.1 as of 10/10 -- 11/25 w/ Engineering
+B34_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-b2g34_v2_1-flame-kk/latest/'
+B34_KK_B2G='b2g-34.0.en-US.android-arm.tar.gz'
+B34_EN_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-b2g34_v2_1-flame-kk-eng/latest/'
+B34_TB_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/tinderbox-builds/mozilla-b2g34_v2_1-flame-kk-eng/latest/'
+#B34_KK_DIR_SER='/mnt/builds/Flame/Flame_KK/2.1/b2g-34' 
+#B34_EN_DIR_SER='/mnt/builds/Flame/Flame_KK/2.1/Engineering'
+B34_KK='/Flame/Flame_KK/2.1/b2g-34'
+B34_EN='/Flame/Flame_KK/2.1/Engineering'
+
 
 # LC_KK 2.0
 LC_KK_PATH='https://pvtbuilds.mozilla.org/pvt/mozilla.org/b2gotoro/nightly/mozilla-b2g32_v2_0-flame-kk/latest/'
 LC_KK_B2G='b2g-32.0.en-US.android-arm.tar.gz'
-LC_KK_DIR='/mnt/builds/Flame/Flame_KK/2.0' #'$HOME/Desktop/oliverthor/builds/2.0' 
+#LC_KK_DIR_SER='/mnt/builds/Flame/Flame_KK/2.0' #'$HOME/Desktop/oliverthor/builds/2.0' 
+LC_KK='/Flame/Flame_KK/2.0'
 
 # Build Path Container
 #BUILD_PATHS[0]=	$MC_KK_PATH
@@ -106,8 +122,8 @@ function get_zip() {
 
 # Pull all Build files
 function assemble_build() {
- #$1 = $BUILD_KK_PATH
- #$2 = $BUILD_KK_B2G
+ #$1 = $BUILD_PATH
+ #$2 = $BUILD_B2G
   get_tar $1 $2
   get_zip $1 $GAIA
   get_zip $1 $IMAGE
@@ -138,11 +154,129 @@ function clean_kk() {
   rm -rf b2g-distro/
 
   # replace old boot
-  cp $BOOT_IMAGE $DIRNAME'/b2g-distro/out/target/product/flame'
+  #cp $BOOT_IMAGE $DIRNAME'/b2g-distro/out/target/product/flame'
   # add flash script
   cp $FLASH_SCRIPT $DIRNAME
 }
 
+### Pull Build Functions
+function pull_2_2() {
+    # Mozilla Master Central KK
+    #cd '/mnt/builds/Flame/Flame_KK/2.2/Central'
+    #cd $MC_KK_DIR #$HOME'/Desktop/oliverthor/builds/2.2'
+
+    #cd $MC_KK_DIR_SER
+    cd $CUR_DIR$MC_KK
+    pwd
+    echo "Starting KK v2.2"
+    assemble_build $MC_KK_PATH $MC_KK_B2G
+}
+
+function pull_2_2E() {
+    # Mozilla Master Central KK
+    #cd '/mnt/builds/Flame/Flame_KK/2.2/Central'
+    #cd $ENG_CEN_DIR #$HOME'/Desktop/oliverthor/builds/2.2'
+    #cd $MC_EN_DIR_SER
+    cd $CUR_DIR$MC_EN
+    pwd
+    echo "Starting 2.2E [Nightly Engineering]"
+    assemble_build $MC_EN_PATH $MC_KK_B2G
+}
+
+function pull_2_1() {
+    # Mozilla b2g-34 KK -- 2.1
+    #temp=$HOME'/Desktop/oliverthor/builds/2.1'
+    #cd $B2G_KK_DIR #$HOME'/Desktop/oliverthor/builds/2.1' #$B2G_KK_DIR
+    cd $CUR_DIR$B34_KK
+    pwd
+    echo "Starting KK v2.1 -- b2g-34"
+    assemble_build $B34_KK_PATH $B34_KK_B2G
+}
+
+function pull_2_1E() {
+    # Mozilla b2g-34 KK -- 2.1
+    #temp=$HOME'/Desktop/oliverthor/builds/2.1'
+    #cd $B2G_KK_DIR #$HOME'/Desktop/oliverthor/builds/2.1' #$B2G_KK_DIR
+    cd $CUR_DIR$B34_EN
+    pwd
+    echo "Starting KK v2.1 -- b2g-34 [Nightly Engineering]"
+    assemble_build $B34_EN_PATH $B34_KK_B2G
+}
+
+function pull_2_1TB() {
+
+    cd $CUR_DIR$B34_EN
+    pwd
+    echo "Starting KK v2.1 -- b2g-34 [Tinderbox Engineering]"
+    assemble_build $B34_TB_PATH $B34_KK_B2G
+}
+
+function pull_2_0() {
+    # Mozilla b2g-34 KK -- 2.1
+    #cd '/mnt/builds/Flame/Flame_KK/2.0'
+    #cd $HOME'/Desktop/oliverthor/builds/2.0'
+    #cd $LC_KK_DIR_SER
+    cd $CUR_DIR$LC_KK
+    pwd
+    echo "Starting KK v2.0"
+    assemble_build $LC_KK_PATH $LC_KK_B2G
+}
+
+function pull_builds_args()
+{
+    case $1 in	
+	'2.0') pull_2_0;;
+	'2.1') pull_2_1;;
+	'2.1E') pull_2_1E;;
+	'2.2') pull_2_2;;
+	'2.2E') pull_2_2E;;
+	'2.1TB') pull_2_1TB;;
+	'all')
+	echo "all -- pulling all builds: 2.2, 2.2E, 2.1, 2.1E, 2.0"
+	    pull_2_2
+	    pull_2_2E
+	    pull_2_1
+	    pull_2_1E
+	    pull_2_0
+	    ;;
+	'smoke')
+	echo "smoke -- pulling builds for smoketeam: 2.2, 2.1, 2.2E, 2.1E"
+	    pull_2_2
+	    pull_2_1
+	    pull_2_2E
+	    pull_2_1E
+	    ;;
+	'user')
+	echo "user -- pulling builds for test team: 2.2, 2.1, 2.0"
+	    pull_2_2
+	    pull_2_1
+	    pull_2_0
+	    ;;
+	'eng'*)
+	echo "engineering -- pulling eng. builds: 2.2E, 2.1E"
+	    pull_2_2E
+	    pull_2_1E
+	    ;;
+	*) echo "No Argument: provide '2.0', '2.1','2.2', or '2.2E', '2.1E or '2.1TB' to pull a particular build.";;
+    esac
+}
+
+function displayIntro()
+{
+  echo "GET BUILDS"
+  echo "****************************************************************"
+  echo "#.# -- pull down latest of that respective build (2.2, 2.1, 2.0, 2.2E, 2.1E, 2.1TB)"
+  echo "smoke -- latest 2.2, 2.1, 2.2E and 2.1E"
+  echo "all -- latest 2.2, 2.1, 2.0, 2.2E and 2.1E"
+  echo "user -- latest 2.2, 2.1 and 2.0"
+  echo "eng -- latest 2.2 Engineering and 2.1 Engineering [from nightly]"
+  echo "----------------------------------------------------------------"
+  echo "Flags:"
+  echo "-s : download to server [default]"
+  echo "-l : download to local machine [/home/flash/desktop/builds]"
+  echo "----------------------------------------------------------------"
+
+}
 ### Main
 
 # Timer
@@ -157,29 +291,77 @@ runTime=$(date +"%s")
 	#cd ${BUILD_DIRS[i]}
 	#assemble_build ${BUILD_PATH[i]} ${BUILD_B2GS[i]}
 #done
+#Get_Opts -- function wasn't working?
+CUR_DIR=$DIR_SER
+while getopts :ls opt; do
+  case $opt in
+  l) echo -e "L: Download Paths Set to Local Machine -- $DIR_LOC" #set local download paths
+    
+  # create local directories
+  mkdir -p $DIR_LOC$MC_KK
+  mkdir -p $DIR_LOC$MC_EN
+  mkdir -p $DIR_LOC$B34_KK
+  mkdir -p $DIR_LOC$B34_EN
+  mkdir -p $DIR_LOC$LC_KK
+  CUR_DIR=$DIR_LOC
+  
+  ;;
+  s) echo "S: Download Paths Set to Server -- $DIR_SER" #set server download paths
+  CUR_DIR=$DIR_SER
+  ;;
+  *)
+  ;;
+  esac
+done
+# handle args after opts
+shift $(($OPTIND - 1))
+first_arg=$1
 
-# Mozilla Master Central KK
-cd '/mnt/builds/Flame/Flame_KK/2.2/Central'
-echo "Starting KK v2.2"
-assemble_build $MC_KK_PATH $MC_KK_B2G
-# check for current build in latest
-# if outdated, move latest out and pull newest in
+displayIntro
+if [ -z "$first_arg" ]; then
+  echo "Select builds to download: "
+  read first_arg
+  echo "Download Path: [server/local]"
+  DL_DIR="server"
+  read DL_DIR
+  case $DL_DIR in
+    'server')
+      CUR_DIR=$DIR_SER
+      ;;
+    'local')
+      CUR_DIR=$DIR_LOC
+      ;;
+   esac
+fi
+#second_arg=$2
+#printf "$CURDIR set for download.\nBuilds:\n- 2.2 [User]\n- 2.2E [Engineering]\n2.1 [User]\n2.1E [Engineering]\n- 2.0 [User]"
 
+printf "DOWNLOAD PATH: $CUR_DIR\n"
+printf "BUILDS TO DOWNLOAD: $first_arg\n"
+echo "**********************"
+echo "Confirm above to download: (y/n)"
 
-# Mozilla b2g-32 KK
-cd '/mnt/builds/Flame/Flame_KK/2.0'
-echo "Starting KK v2.0"
-assemble_build $LC_KK_PATH $LC_KK_B2G
+#RUN_BUILDS="y"
+read RUN_BUILDS
 
-# Mozilla b2g-34 KK -- 2.1
-cd '/mnt/builds/Flame/Flame_KK/2.1/b2g-34'
-echo "Starting KK v2.1 -- b2g-34"
-assemble_build $B2G34_KK_PATH $B2G34_KK_B2G
+if [[ "$RUN_BUILDS" = "y" ]]; then
 
+  if [[ "$CUR_DIR" = "$DIR_LOC" ]]; then
+    #echo "cur dir is equal to local"
+    if [ ! -d '/home/flash/Desktop/builds/' ]; then
+      mkdir -p $DIR_LOC$MC_KK
+      mkdir -p $DIR_LOC$MC_EN
+      mkdir -p $DIR_LOC$B34_KK
+      mkdir -p $DIR_LOC$B34_EN
+      mkdir -p $DIR_LOC$LC_KK
+    fi
+  fi
+
+  pull_builds_args $first_arg
+fi
 
 # End Timer
 currTime=$(date +"%s")
 diff=$(($currTime-$runTime))
 TIME_ELAPSED="$(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
 echo "$(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
-
