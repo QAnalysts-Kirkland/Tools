@@ -4,6 +4,7 @@
 # Edited:	Oliver Nelson
 # Date: 	8-12-14 -- RK
 #		10-15-14 -- ON
+# Last Update:	12-23-14 -- ON
 
 # Purpose:	
 #
@@ -37,12 +38,13 @@
 #		2014-11-25 # reorganizing variables by paths
 #		2014-12-19 # added intro to script to help guide functionality
 #			     user input flow to perform script without arguments given
+#		2014-12-23 # added credentials request for pvt: does not elegantly break with improper login yet
 		
 
 ### Variables
 # Security 
-USER='onelson@qanalydocs.com'
-PASS='xYaUSsyYfyCV98nm'
+USER=''
+PASS=''
 
 # Generic
 BUILDID=''
@@ -105,18 +107,18 @@ LC_KK='/Flame/Flame_KK/2.0'
 ### Functions
 # Get file
 function get_file() {
-  curl --anyauth -L -u $USER:$PASS $1/$2 -o $2
+  curl -# --anyauth -L -u $USER:$PASS $1/$2 -o $2
 }
 
 # Get tar files 
 function get_tar() {
-  curl --anyauth -L -u $USER:$PASS $1/$2 -o $2
+  curl -# --anyauth -L -u $USER:$PASS $1/$2 -o $2
   tar -zxf $2
 }
 
 # Get zip files
 function get_zip() {
-  curl --anyauth -L -u $USER:$PASS $1/$2 -o $2
+  curl -# --anyauth -L -u $USER:$PASS $1/$2 -o $2
   unzip -q $2
 }
 
@@ -124,10 +126,18 @@ function get_zip() {
 function assemble_build() {
  #$1 = $BUILD_PATH
  #$2 = $BUILD_B2G
+  echo "Downloading B2G..."
   get_tar $1 $2
+  
+  echo "Downloading Gaia..."
   get_zip $1 $GAIA
+  
+  echo "Downloading Image..."
   get_zip $1 $IMAGE
+  
+  echo "Downloading Sources..."
   get_file $1 $SOURCES
+  
   create_name
   clean_kk $2 $GAIA $IMAGE $SOURCES
 }
@@ -264,6 +274,13 @@ function pull_builds_args()
 function displayIntro()
 {
   echo "GET BUILDS"
+  echo "**********"
+  echo "Need pvt login credentials:"
+  echo "---------------------------"
+  echo "Username? "
+  read USER
+  echo "Password? "
+  read -s PASS
   echo "****************************************************************"
   echo "#.# -- pull down latest of that respective build (2.2, 2.1, 2.0, 2.2E, 2.1E, 2.1TB)"
   echo "smoke -- latest 2.2, 2.1, 2.2E and 2.1E"
@@ -292,6 +309,7 @@ runTime=$(date +"%s")
 	#assemble_build ${BUILD_PATH[i]} ${BUILD_B2GS[i]}
 #done
 #Get_Opts -- function wasn't working?
+
 CUR_DIR=$DIR_SER
 while getopts :ls opt; do
   case $opt in
@@ -321,17 +339,20 @@ displayIntro
 if [ -z "$first_arg" ]; then
   echo "Select builds to download: "
   read first_arg
-  echo "Download Path: [server/local]"
-  DL_DIR="server"
-  read DL_DIR
-  case $DL_DIR in
-    'server')
-      CUR_DIR=$DIR_SER
-      ;;
-    'local')
-      CUR_DIR=$DIR_LOC
-      ;;
-   esac
+  
+  if [[ "$CUR_DIR" != "$DIR_LOC" ]]; then
+    echo "Download Path: [server/local]"
+    DL_DIR="server"
+    read DL_DIR
+    case $DL_DIR in
+      'server')
+	CUR_DIR=$DIR_SER
+	;;
+      'local')
+	CUR_DIR=$DIR_LOC
+	;;
+    esac
+  fi
 fi
 #second_arg=$2
 #printf "$CURDIR set for download.\nBuilds:\n- 2.2 [User]\n- 2.2E [Engineering]\n2.1 [User]\n2.1E [Engineering]\n- 2.0 [User]"
