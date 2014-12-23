@@ -1,0 +1,5 @@
+m.facebook.com:HSTS	1	16427	1434913153097,1,0
+api.accounts.firefox.com:HSTS	0	16427	1434913394923,1,1
+marketplace.cdn.mozilla.net:HSTS	1	16427	1450898900412,1,0
+marketplace.firefox.com:HSTS	1	16427	1450898909119,1,0
+accounts.google.com:HSTS	0	16427	1430254796452,1,1
