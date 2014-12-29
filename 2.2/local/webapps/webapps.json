@@ -3,8 +3,8 @@
     "origin": "app://bluetooth.gaiamobile.org",
     "installOrigin": "app://bluetooth.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://bluetooth.gaiamobile.org/manifest.webapp",
     "localId": 1001,
     "appStatus": 3,
@@ -24,14 +24,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "bookmark.gaiamobile.org": {
     "origin": "app://bookmark.gaiamobile.org",
     "installOrigin": "app://bookmark.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://bookmark.gaiamobile.org/manifest.webapp",
     "localId": 1002,
     "appStatus": 3,
@@ -51,41 +52,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
-  },
-  "browser.gaiamobile.org": {
-    "origin": "app://browser.gaiamobile.org",
-    "installOrigin": "app://browser.gaiamobile.org",
-    "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
-    "manifestURL": "app://browser.gaiamobile.org/manifest.webapp",
-    "localId": 1003,
-    "appStatus": 3,
-    "basePath": "/system/b2g/webapps",
-    "id": "browser.gaiamobile.org",
-    "removable": false,
-    "name": "Browser",
-    "csp": "",
-    "role": "system",
-    "redirects": null,
-    "installerAppId": 0,
-    "installerIsBrowser": false,
-    "installState": "installed",
-    "storeId": "",
-    "storeVersion": 0,
-    "downloading": false,
-    "readyToApplyDownload": false,
-    "lastUpdateCheck": 1410446461381,
-    "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "calendar.gaiamobile.org": {
     "origin": "app://calendar.gaiamobile.org",
     "installOrigin": "app://calendar.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://calendar.gaiamobile.org/manifest.webapp",
     "localId": 1004,
     "appStatus": 3,
@@ -105,14 +80,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "callscreen.gaiamobile.org": {
     "origin": "app://callscreen.gaiamobile.org",
     "installOrigin": "app://callscreen.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://callscreen.gaiamobile.org/manifest.webapp",
     "localId": 1005,
     "appStatus": 3,
@@ -132,14 +108,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "camera.gaiamobile.org": {
     "origin": "app://camera.gaiamobile.org",
     "installOrigin": "app://camera.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://camera.gaiamobile.org/manifest.webapp",
     "localId": 1006,
     "appStatus": 3,
@@ -159,14 +136,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "clock.gaiamobile.org": {
     "origin": "app://clock.gaiamobile.org",
     "installOrigin": "app://clock.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://clock.gaiamobile.org/manifest.webapp",
     "localId": 1007,
     "appStatus": 3,
@@ -186,14 +164,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "collection.gaiamobile.org": {
     "origin": "app://collection.gaiamobile.org",
     "installOrigin": "app://collection.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://collection.gaiamobile.org/manifest.webapp",
     "localId": 1008,
     "appStatus": 3,
@@ -213,14 +192,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "communications.gaiamobile.org": {
     "origin": "app://communications.gaiamobile.org",
     "installOrigin": "app://communications.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://communications.gaiamobile.org/manifest.webapp",
     "localId": 1009,
     "appStatus": 3,
@@ -261,14 +241,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "costcontrol.gaiamobile.org": {
     "origin": "app://costcontrol.gaiamobile.org",
     "installOrigin": "app://costcontrol.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://costcontrol.gaiamobile.org/manifest.webapp",
     "localId": 1010,
     "appStatus": 3,
@@ -288,14 +269,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "email.gaiamobile.org": {
     "origin": "app://email.gaiamobile.org",
     "installOrigin": "app://email.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://email.gaiamobile.org/manifest.webapp",
     "localId": 1011,
     "appStatus": 3,
@@ -306,10 +288,6 @@
     "csp": "",
     "role": "",
     "redirects": [
-      {
-        "from": "https://email.gaiamobile.org/oauth2callback",
-        "to": "/js/cards/oauth2/redirect.html"
-      },
       {
         "from": "http://localhost",
         "to": "/js/cards/oauth2/redirect.html"
@@ -324,14 +302,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "emergency-call.gaiamobile.org": {
     "origin": "app://emergency-call.gaiamobile.org",
     "installOrigin": "app://emergency-call.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://emergency-call.gaiamobile.org/manifest.webapp",
     "localId": 1012,
     "appStatus": 3,
@@ -351,14 +330,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "findmydevice.gaiamobile.org": {
     "origin": "app://findmydevice.gaiamobile.org",
     "installOrigin": "app://findmydevice.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://findmydevice.gaiamobile.org/manifest.webapp",
     "localId": 1013,
     "appStatus": 3,
@@ -378,14 +358,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "fl.gaiamobile.org": {
     "origin": "app://fl.gaiamobile.org",
     "installOrigin": "app://fl.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://fl.gaiamobile.org/manifest.webapp",
     "localId": 1014,
     "appStatus": 3,
@@ -405,14 +386,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "fm.gaiamobile.org": {
     "origin": "app://fm.gaiamobile.org",
     "installOrigin": "app://fm.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://fm.gaiamobile.org/manifest.webapp",
     "localId": 1015,
     "appStatus": 3,
@@ -432,14 +414,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "ftu.gaiamobile.org": {
     "origin": "app://ftu.gaiamobile.org",
     "installOrigin": "app://ftu.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://ftu.gaiamobile.org/manifest.webapp",
     "localId": 1016,
     "appStatus": 3,
@@ -480,14 +463,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "gallery.gaiamobile.org": {
     "origin": "app://gallery.gaiamobile.org",
     "installOrigin": "app://gallery.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://gallery.gaiamobile.org/manifest.webapp",
     "localId": 1017,
     "appStatus": 3,
@@ -507,14 +491,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "homescreen.gaiamobile.org": {
     "origin": "app://homescreen.gaiamobile.org",
     "installOrigin": "app://homescreen.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://homescreen.gaiamobile.org/manifest.webapp",
     "localId": 1018,
     "appStatus": 3,
@@ -534,14 +519,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "keyboard.gaiamobile.org": {
     "origin": "app://keyboard.gaiamobile.org",
     "installOrigin": "app://keyboard.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://keyboard.gaiamobile.org/manifest.webapp",
     "localId": 1019,
     "appStatus": 3,
@@ -561,14 +547,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "marketplace.firefox.com": {
     "origin": "app://marketplace.firefox.com",
     "installOrigin": "https://marketplace.firefox.com",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "https://marketplace.firefox.com/packaged.webapp",
     "removable": false,
     "localId": 1020,
@@ -584,7 +571,7 @@
     "csp": "",
     "role": "",
     "redirects": null,
-    "lastCheckedUpdate": 1410458389531,
+    "lastCheckedUpdate": 1419361154154,
     "installerAppId": 0,
     "installerIsBrowser": false,
     "storeVersion": 0,
@@ -592,14 +579,74 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true,
+    "staged": {
+      "manifestHash": "841a2d22e9866fa802acdd08deac573b",
+      "etag": "\"09fe3ce7bef0f34725ff60bb1146f724da1581691bb7fa09fbafa0ef8db6a3c5\""
+    },
+    "downloadAvailable": true,
+    "downloadSize": 31600,
+    "updateManifest": {
+      "name": "Marketplace",
+      "icons": {
+        "60": "/app-icons/60.png",
+        "90": "/app-icons/90.png",
+        "120": "/app-icons/120.png",
+        "128": "/app-icons/128.png"
+      },
+      "version": "20141002113837",
+      "package_path": "https://marketplace.firefox.com/downloads/file/262947/marketplace-20141002113837.zip",
+      "size": 31600,
+      "release_notes": "Updated Yulelog with more localizations for offline messages and Firefox Accounts permission to the manifest.",
+      "locales": {
+        "el": {},
+        "xh": {},
+        "ca": {},
+        "it": {},
+        "cs": {},
+        "ga-IE": {},
+        "bn-BD": {},
+        "eu": {},
+        "zu": {},
+        "es": {},
+        "ru": {},
+        "nl": {},
+        "tr": {},
+        "pa": {},
+        "ro": {},
+        "pl": {},
+        "ta": {},
+        "fr": {},
+        "bg": {},
+        "hr": {},
+        "en-US": {},
+        "hu": {},
+        "pt-BR": {},
+        "nb-NO": {},
+        "ja": {},
+        "sr": {},
+        "sq": {},
+        "ko": {},
+        "mk": {},
+        "sk": {},
+        "zh-CN": {},
+        "de": {},
+        "sr-Latn": {},
+        "zh-TW": {}
+      },
+      "developer": {
+        "url": "http://mozilla.org",
+        "name": "Mozilla"
+      }
+    }
   },
   "music.gaiamobile.org": {
     "origin": "app://music.gaiamobile.org",
     "installOrigin": "app://music.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://music.gaiamobile.org/manifest.webapp",
     "localId": 1021,
     "appStatus": 3,
@@ -619,14 +666,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "operatorvariant.gaiamobile.org": {
     "origin": "app://operatorvariant.gaiamobile.org",
     "installOrigin": "app://operatorvariant.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://operatorvariant.gaiamobile.org/manifest.webapp",
     "localId": 1022,
     "appStatus": 3,
@@ -646,14 +694,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "pdfjs.gaiamobile.org": {
     "origin": "app://pdfjs.gaiamobile.org",
     "installOrigin": "app://pdfjs.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://pdfjs.gaiamobile.org/manifest.webapp",
     "localId": 1023,
     "appStatus": 3,
@@ -673,14 +722,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "ringtones.gaiamobile.org": {
     "origin": "app://ringtones.gaiamobile.org",
     "installOrigin": "app://ringtones.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://ringtones.gaiamobile.org/manifest.webapp",
     "localId": 1024,
     "appStatus": 3,
@@ -700,14 +750,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "search.gaiamobile.org": {
     "origin": "app://search.gaiamobile.org",
     "installOrigin": "app://search.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://search.gaiamobile.org/manifest.webapp",
     "localId": 1025,
     "appStatus": 3,
@@ -727,14 +778,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "settings.gaiamobile.org": {
     "origin": "app://settings.gaiamobile.org",
     "installOrigin": "app://settings.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://settings.gaiamobile.org/manifest.webapp",
     "localId": 1026,
     "appStatus": 3,
@@ -754,14 +806,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "sms.gaiamobile.org": {
     "origin": "app://sms.gaiamobile.org",
     "installOrigin": "app://sms.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://sms.gaiamobile.org/manifest.webapp",
     "localId": 1027,
     "appStatus": 3,
@@ -781,14 +834,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "system.gaiamobile.org": {
     "origin": "app://system.gaiamobile.org",
     "installOrigin": "app://system.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://system.gaiamobile.org/manifest.webapp",
     "localId": 1028,
     "appStatus": 3,
@@ -808,14 +862,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "verticalhome.gaiamobile.org": {
     "origin": "app://verticalhome.gaiamobile.org",
     "installOrigin": "app://verticalhome.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://verticalhome.gaiamobile.org/manifest.webapp",
     "localId": 1029,
     "appStatus": 3,
@@ -835,14 +890,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "video.gaiamobile.org": {
     "origin": "app://video.gaiamobile.org",
     "installOrigin": "app://video.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://video.gaiamobile.org/manifest.webapp",
     "localId": 1030,
     "appStatus": 3,
@@ -862,14 +918,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "wallpaper.gaiamobile.org": {
     "origin": "app://wallpaper.gaiamobile.org",
     "installOrigin": "app://wallpaper.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://wallpaper.gaiamobile.org/manifest.webapp",
     "localId": 1031,
     "appStatus": 3,
@@ -889,14 +946,15 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "wappush.gaiamobile.org": {
     "origin": "app://wappush.gaiamobile.org",
     "installOrigin": "app://wappush.gaiamobile.org",
     "receipt": null,
-    "installTime": 1404371751956,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://wappush.gaiamobile.org/manifest.webapp",
     "localId": 1032,
     "appStatus": 3,
@@ -916,7 +974,8 @@
     "readyToApplyDownload": false,
     "lastUpdateCheck": 1410446461381,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true
   },
   "{7c34ab05-a309-4dce-83c4-b91721cb0977}": {
     "name": "Facebook",
@@ -945,43 +1004,10 @@
     "storeId": "",
     "storeVersion": 0,
     "role": "",
-    "lastCheckedUpdate": 1410458389543,
+    "lastCheckedUpdate": 1419361153109,
     "kind": "hosted",
     "widgetPages": [],
-    "manifest": {
-      "name": "Facebook",
-      "description": "Facebook helps you connect and share with the people in your life.",
-      "launch_path": "/",
-      "icons": {
-        "16": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yu/r/9a_ZCHI6igB.png",
-        "32": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yO/r/hwIuG_aaRN5.png",
-        "48": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/y9/r/nxIyFtMM33u.png",
-        "128": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yo/r/---VLP2qoii.png",
-        "256": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yL/r/yi-h6CNodEW.png"
-      },
-      "developer": {
-        "name": "Facebook",
-        "url": "http://www.facebook.com"
-      },
-      "default_locale": "en",
-      "permissions": {
-        "geolocation": {
-          "description": "Required for check-ins"
-        }
-      },
-      "activities": {
-        "share": {
-          "href": "/home.php",
-          "disposition": "window",
-          "filters": {
-            "type": "image/*"
-          }
-        }
-      },
-      "chrome": {
-        "navigation": true
-      }
-    }
+    "enabled": true
   },
   "{0a164fdf-a6e7-442f-8603-1cbe8766193f}": {
     "name": "CutTheRope",
@@ -998,10 +1024,10 @@
     "basePath": "/data/local/webapps",
     "progress": 3986817,
     "installState": "installed",
-    "downloadAvailable": false,
+    "downloadAvailable": true,
     "downloading": false,
     "readyToApplyDownload": false,
-    "downloadSize": 3986817,
+    "downloadSize": 3962427,
     "lastUpdateCheck": 1406671258747,
     "etag": "\"9ca341faa6c75c44955efddc623403f6686ed63cc04045309cf9faf551fafa53\"",
     "packageEtag": "\"cdb4b35c26fa9480dee4b5d7afd3e384ef57175ea08abcd12dde3a9272c94854\"",
@@ -1012,16 +1038,38 @@
     "storeId": "https://marketplace.firefox.com#a22e0277-35bc-434d-9371-1568c75fc726",
     "storeVersion": 1513878,
     "role": "",
-    "lastCheckedUpdate": 1410458385804,
+    "lastCheckedUpdate": 1419361154079,
     "kind": "packaged",
-    "widgetPages": []
+    "widgetPages": [],
+    "enabled": true,
+    "staged": {
+      "manifestHash": "f21c1d94fef409b201048f12c0003862",
+      "etag": "\"1bb7198ad65f270f3a7cce26008048358adb50973b9c2117d45cdafe711576d1\""
+    },
+    "updateManifest": {
+      "name": "CutTheRope",
+      "icons": {
+        "16": "/favicon.png",
+        "64": "/fb64.png",
+        "128": "/fb128.png",
+        "256": "/fb.png"
+      },
+      "version": "1.4",
+      "package_path": "https://marketplace.firefox.com/downloads/file/265749/cut-the-rope-1.4.zip",
+      "size": 3962427,
+      "release_notes": "- Fix long press bug",
+      "developer": {
+        "url": "http://www.zeptolab.com",
+        "name": "ZeptoLab"
+      }
+    }
   },
   "network-alerts.gaiamobile.org": {
     "origin": "app://network-alerts.gaiamobile.org",
     "installOrigin": "app://network-alerts.gaiamobile.org",
     "receipt": null,
-    "installTime": 1410420665632,
-    "updateTime": 1410446461381,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
     "manifestURL": "app://network-alerts.gaiamobile.org/manifest.webapp",
     "localId": 1039,
     "appStatus": 3,
@@ -1041,6 +1089,243 @@
     "storeVersion": 0,
     "downloading": false,
     "readyToApplyDownload": false,
-    "lastUpdateCheck": 1410446461381
+    "lastUpdateCheck": 1410446461381,
+    "enabled": true
+  },
+  "default_theme.gaiamobile.org": {
+    "origin": "app://default_theme.gaiamobile.org",
+    "installOrigin": "app://default_theme.gaiamobile.org",
+    "receipt": null,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
+    "manifestURL": "app://default_theme.gaiamobile.org/manifest.webapp",
+    "localId": 1040,
+    "appStatus": 3,
+    "basePath": "/system/b2g/webapps",
+    "id": "default_theme.gaiamobile.org",
+    "removable": false,
+    "kind": "packaged",
+    "name": "Default Theme",
+    "csp": "",
+    "role": "theme",
+    "widgetPages": [],
+    "redirects": null,
+    "installerAppId": 0,
+    "installerIsBrowser": false,
+    "installState": "installed",
+    "storeId": "",
+    "storeVersion": 0,
+    "enabled": true,
+    "downloading": false,
+    "readyToApplyDownload": false
+  },
+  "privacy-panel.gaiamobile.org": {
+    "origin": "app://privacy-panel.gaiamobile.org",
+    "installOrigin": "app://privacy-panel.gaiamobile.org",
+    "receipt": null,
+    "installTime": 1419251159790,
+    "updateTime": 1419251159790,
+    "manifestURL": "app://privacy-panel.gaiamobile.org/manifest.webapp",
+    "localId": 1041,
+    "appStatus": 3,
+    "basePath": "/system/b2g/webapps",
+    "id": "privacy-panel.gaiamobile.org",
+    "removable": false,
+    "kind": "packaged",
+    "name": "Privacy Panel",
+    "csp": "",
+    "role": "",
+    "widgetPages": [],
+    "redirects": null,
+    "installerAppId": 0,
+    "installerIsBrowser": false,
+    "installState": "installed",
+    "storeId": "",
+    "storeVersion": 0,
+    "enabled": true,
+    "downloading": false,
+    "readyToApplyDownload": false
+  },
+  "{89496fec-6034-4f26-bc3d-522dc2446850}": {
+    "name": "Terra",
+    "csp": "",
+    "installOrigin": "https://marketplace.firefox.com",
+    "origin": "app://{89496fec-6034-4f26-bc3d-522dc2446850}",
+    "receipts": [],
+    "installTime": 1419362845713,
+    "manifestURL": "https://marketplace.firefox.com/app/f49ce288-5c8f-412a-8280-af6810532c46/manifest.webapp",
+    "appStatus": 1,
+    "removable": true,
+    "id": "{89496fec-6034-4f26-bc3d-522dc2446850}",
+    "localId": 1042,
+    "basePath": "/data/local/webapps",
+    "progress": 90956,
+    "installState": "installed",
+    "downloadAvailable": false,
+    "downloading": false,
+    "readyToApplyDownload": false,
+    "downloadSize": 90956,
+    "lastUpdateCheck": 1419362845713,
+    "etag": "\"96a97d21c5db22f9dc104915bde078c3e455e81555eca0d29c63cc968f7154b3\"",
+    "packageEtag": "\"1a6d3f030718eb0c334ae097b9475e043194065e9ead67c1db9597a490864ee8\"",
+    "manifestHash": "6c32c110192baf5825a0c935f5fb3fd8",
+    "packageHash": "1157be75b765fc3dc9feafe2630070a5",
+    "installerAppId": 1020,
+    "installerIsBrowser": false,
+    "storeId": "https://marketplace.firefox.com#f49ce288-5c8f-412a-8280-af6810532c46",
+    "storeVersion": 1417364,
+    "role": "",
+    "widgetPages": [],
+    "kind": "packaged",
+    "enabled": true,
+    "updateManifest": {
+      "name": "Terra",
+      "icons": {
+        "60": "/icone_60.png",
+        "128": "/icone_128.png"
+      },
+      "version": "1.0.1",
+      "package_path": "https://marketplace.firefox.com/downloads/file/189856/terra-1.0.1.zip",
+      "size": 90956,
+      "release_notes": null,
+      "locales": {
+        "en": {
+          "description": "Terra Mobile",
+          "developer": {
+            "url": "http://m.en.terra.com"
+          }
+        },
+        "pt-BR": {
+          "description": "Terra Mobile Brasil",
+          "developer": {
+            "url": "http://m.terra.com.br"
+          }
+        },
+        "es": {
+          "description": "Terra Mobile",
+          "developer": {
+            "url": "http://m.terra.es"
+          }
+        }
+      },
+      "developer": {
+        "url": "http://terra.com.br",
+        "name": "Terra Networks"
+      }
+    }
+  },
+  "{9c1c7102-a1f6-4fd3-b753-6d1d1e8b646a}": {
+    "name": "SoundCloud - Music & Audio",
+    "csp": "",
+    "installOrigin": "https://marketplace.firefox.com",
+    "origin": "https://m.soundcloud.com",
+    "receipts": [],
+    "installTime": 1419362859434,
+    "manifestURL": "https://m.soundcloud.com/manifest.webapp",
+    "appStatus": 1,
+    "removable": true,
+    "id": "{9c1c7102-a1f6-4fd3-b753-6d1d1e8b646a}",
+    "localId": 1043,
+    "basePath": "/data/local/webapps",
+    "progress": 0,
+    "installState": "installed",
+    "downloadAvailable": false,
+    "downloading": false,
+    "readyToApplyDownload": false,
+    "downloadSize": 0,
+    "lastUpdateCheck": 1419362859434,
+    "etag": "\"54917e0d-4d4\"",
+    "manifestHash": "d9a62efb5cc884d6fc78b2ff097f5085",
+    "installerAppId": 1020,
+    "installerIsBrowser": false,
+    "storeId": "",
+    "storeVersion": 0,
+    "role": "",
+    "widgetPages": [],
+    "kind": "hosted",
+    "enabled": true,
+    "manifest": {
+      "version": "2.0.0",
+      "name": "SoundCloud - Music & Audio",
+      "description": "Hear the world's sounds",
+      "icons": {
+        "16": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_16-f14416a7.png",
+        "24": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_24-f14416a7.png",
+        "32": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_32-f14416a7.png",
+        "40": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_40-f14416a7.png",
+        "48": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_48-f14416a7.png",
+        "56": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_56-f14416a7.png",
+        "64": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_64-f14416a7.png",
+        "128": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_128-f14416a7.png",
+        "512": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_512-f14416a7.png",
+        "1024": "https://m2-a.sndcdn.com/assets/images/sc-icons/fxos_1024-f14416a7.png"
+      },
+      "developer": {
+        "name": "SoundCloud LTD",
+        "url": "https://soundcloud.com"
+      },
+      "permissions": {
+        "audio-channel-content": {
+          "description": "Enable audio for SoundCloud"
+        }
+      },
+      "installs_allowed_from": [
+        "*"
+      ],
+      "default_locale": "en",
+      "fullscreen": "true"
+    }
+  },
+  "{64e02c21-478e-4337-bd72-941646c1a85d}": {
+    "name": "Pasjans/Solitaire",
+    "csp": "",
+    "installOrigin": "https://marketplace.firefox.com",
+    "origin": "http://pasjans-online.pl",
+    "receipts": [],
+    "installTime": 1419362908289,
+    "manifestURL": "http://pasjans-online.pl/manifest.webapp",
+    "appStatus": 1,
+    "removable": true,
+    "id": "{64e02c21-478e-4337-bd72-941646c1a85d}",
+    "localId": 1044,
+    "basePath": "/data/local/webapps",
+    "progress": 0,
+    "installState": "installed",
+    "downloadAvailable": false,
+    "downloading": false,
+    "readyToApplyDownload": false,
+    "downloadSize": 0,
+    "lastUpdateCheck": 1419362908289,
+    "etag": null,
+    "manifestHash": "ab69788b3182097364ef5d39da6aecb1",
+    "installerAppId": 1020,
+    "installerIsBrowser": false,
+    "storeId": "",
+    "storeVersion": 0,
+    "role": "",
+    "widgetPages": [],
+    "kind": "hosted",
+    "enabled": true,
+    "manifest": {
+      "name": "Pasjans/Solitaire",
+      "version": "1.4.1.32",
+      "developer": {
+        "name": "Budnix",
+        "url": "http://pasjans-online.pl"
+      },
+      "description": "Free solitaire (Klondike, Spider, Double Klondike, Forty Thieves) with minimal graphics, no unnecessary distractions of ads and navigation buttons.",
+      "icons": {
+        "16": "/images/icons/icon_16.png",
+        "32": "/images/icons/icon_32.png",
+        "48": "/images/icons/icon_48.png",
+        "64": "/images/icons/icon_64.png",
+        "128": "/images/icons/icon_128.png"
+      },
+      "installs_allowed_from": [
+        "*"
+      ],
+      "launch_path": "/",
+      "default_locale": "en"
+    }
   }
 }

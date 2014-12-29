@@ -24,7 +24,7 @@ adb push b2g /data/b2g &&
 # adb push misc /data/misc &&
 
 echo "pushing internal storage..." &&
-adb push sdcard0 /storage/sdcard0 &&
+adb push sdcard /storage/sdcard0 &&
 
 # echo "push channel change" &&
 # adb push updates.js /system/b2g/defaults/pref/ &&

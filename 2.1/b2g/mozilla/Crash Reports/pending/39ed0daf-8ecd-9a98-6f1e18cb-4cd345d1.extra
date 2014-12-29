@@ -1,0 +1,24 @@
+B2G_OS_Version=2.1.0.0-prerelease
+Android_Device=flame
+Android_Manufacturer=t2m
+ProductName=B2G
+Android_Board=MSM8610
+Android_CPU_ABI=armeabi-v7a
+Vendor=Mozilla
+InstallTime=526215
+Notes=GL Layers! EGL? EGL+ GL Context? GL Context+ GL Layers+ 
+ReleaseChannel=nightly-b2g34
+Android_CPU_ABI2=armeabi
+Version=34.0
+Android_Brand=qcom
+ServerURL=https://crash-reports.mozilla.com/submit?id={3c2e2abc-06d4-11e1-ac3b-374f68613e61}&version=34.0&buildid=20141029001202
+Android_Hardware=qcom
+useragent_locale=en-US
+BuildID=20141029001202
+ProductID={3c2e2abc-06d4-11e1-ac3b-374f68613e61}
+Android_Version=19(REL)
+Android_Model=flame
+CrashTime=1414616335
+StartupTime=1414613639
+ProcessType=
+URL=app://search.gaiamobile.org/manifest.webapp
