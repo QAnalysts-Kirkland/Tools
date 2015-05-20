@@ -3,10 +3,16 @@
 ###################################################################
 # Author: Lionel Mauritson                                        
 # Email: lionel@secretzone.org 
-# Contributors: Jayme Mercado
-# Last updated: 6/25/2014  by Lionel Mauritson
-# Last change: Added a note that the firmware version is not auto
-# detected. Minor formatting changes.
+# Contributors: Jayme Mercado, Jamie Charlton
+# Last updated: 05/19/2015  by Jamie Charlton
+# Previous change: Added a note that the firmware version is not
+# auto detected. Minor formatting changes.
+# Last changes: Added the current firmware and updated the rest of
+# the script to the best of my knowledge, there is a section in
+# flame firmware that if anyone wants to improove please do its set
+# as a read currently would like to see it as a switch but couldnt
+# get it to work right
+
 ###################################################################
 
 DEBUG=0
@@ -26,6 +32,7 @@ function Init_Variables { #Initialise variables
   BUILD_ID=""
   GAIA=""
   GECKO=""
+  GONK="I couldnt pull the gonk.  Did you shallow Flash again?"
   DETECTED_VERSION=""
   GUESSED_DEVICE=""
   GUESSED_VERSION=""
@@ -33,10 +40,11 @@ function Init_Variables { #Initialise variables
   APP_INI=""
   APP_ZIP=""
   SKIP_REPORT=0
+  SKIP_UA=0
   DIR=""
   SIMPLE=0
   Color_Init
-  DEF="${LBLUE}<${RESTORE}"
+  DEF="     ${LBLUE}<${RESTORE}"
   Pick_Text_App
   Create_Temp_Directory
   
@@ -58,7 +66,18 @@ function Pick_Text_App { #Check if the user has scite, if not use gedit
   
   return 0
 }
-
+function get_source {
+echo "Made it into get_source"
+  while read line           
+  do           
+    parse=$(echo $line | cut -c16-27)
+    if [[ $parse ==  'device-flame' ]]; then
+	echo "Made it into parse"
+      GONK=$(echo $line | cut -c77-116)
+      #echo -e $revision
+    fi
+  done <'sources'
+}
 function Color_Init { #Sets up color variables to use later
   
   Debug "Color_Init"
@@ -89,7 +108,7 @@ function Color_Init { #Sets up color variables to use later
 
 function Get_Args { #Get flags for defining behavior
 Debug "Get_Args"
-  while getopts :tvd:qvg opt; do
+  while getopts :tvd:qvgs opt; do
     case $opt in
     t) HIDE_EDITOR=1
     ;;
@@ -105,6 +124,9 @@ Debug "Get_Args"
     g) SIMPLE=1 #Only show gaia and gecko and don't clear the screen
        SKIP_REPORT=1
        DISABLE_CLEAR=1
+       SKIP_UA=1
+    ;;
+    s) SKIP_UA=1
     ;;
     *) Show_Usage
     ;;
@@ -133,7 +155,7 @@ function Choose_Work_Path { #Choose whether to get files from the device or from
 function Start_ADB { #Connects to the device
   Debug "Start_ADB"
 
-  echo "Plug in your device" &&
+  echo "Waiting for device" &&
   adb wait-for-device &&
   adb remount &&
   echo "Found device" &&
@@ -251,6 +273,7 @@ function Pull_ApplicationINI_From_Device { #Pull application.ini from the device
 
 function Extract_Commitfile_From_GaiaZip { #Extract commitfile.txt from gaia.zip OR search for it in the build directory
 Debug "Extract_Commitfile_From_GaiaZip"
+echo -e "Using GaiaZip commit file"
     if [ -e $DIR/gaia.zip ]; then
     unzip -o -u $DIR/gaia.zip gaia/profile/webapps/settings.gaiamobile.org/application.zip -d $TEMP_DIR > /dev/null
     APP_ZIP=$TEMP_DIR/gaia/profile/webapps/settings.gaiamobile.org/application.zip 
@@ -275,7 +298,8 @@ function Get_Gaia_Version_From_Commitfile { #Read the gaia version from the comm
     COMMIT_FILE=$TEMP_DIR/resources/gaia_commit.txt
     Debug "ls: $(ls)"
   else
-    DIE "Can't find APP_ZIP: $APP_ZIP"
+    echo -e "Can't find application.zip: $APP_ZIP. \nCheck the directory / make sure the device is connected."
+    APP_ZIP=""
   fi
   
   if [ ! -e $COMMIT_FILE ]; then
@@ -379,7 +403,7 @@ function Get_Firmware_From_Device_Name { #Determine which firmware list to choos
   Debug "Get_Firmware_From_Device_Name"
   Print_Progress_Info
   #DETECTED_FIRMWARE=`adb shell getprop ro.build.inner.version`
-  echo -e "${LYELLOW}Please note that firmware is NOT auto detected at this time. \nIt defaults to the latest, but that may not be correct${RESTORE}"
+  #echo -e "${LYELLOW}Please note that firmware is NOT auto detected at this time. \nIt defaults to the latest, but that may not be correct${RESTORE}"
   case $DEVICE in
   'Buri') Choose_Buri_Firmware;;
   'Leo') Choose_Leo_Firmware;;
@@ -411,13 +435,27 @@ Debug "Get_Branch_From_Version"
   VERSION_TK="28.1" #Tarako
   VERSION_14="30.0"
   VERSION_20="32.0a2"
+  VERSION_20B="32.0"
+  VERSION_20C="32.0a1"
   VERSION_21="33.0"
-  VERSION_21B="34.0"
-  VERSION_22="35.0"
+  VERSION_21B="34.0a1"
+  VERSION_21C="34.0a2"
+  VERSION_21D="33.0a1"
+  VERSION_21E="34.0"
+  VERSION_22="35.0a1"
   VERSION_22B="36.0"
-  VERSION_23="37.0"
+  VERSION_22C="36.0a1"
+  VERSION_22D="37.0a1"
+  VERSION_22E="37.0a2"  
+  VERSION_22F="37.0"  
+  VERSION_30="38.0a1"
+  VERSION_30B="39.0a1"
+  VERSION_30C="40.0a1"
+  VERSION_30D="41.0a1"
+
+ 
   
-  #CURRENT_MASTER="2.1"
+  #CURRENT_MASTER="3.0""
   
   KNOWN_VERSION=0
   
@@ -451,12 +489,37 @@ Debug "Get_Branch_From_Version"
     KNOWN_VERSION=1
   fi
   
+  if [[ $1 == *$VERSION_20B ]]; then
+    GUESSED_VERSION="2.0"
+    KNOWN_VERSION=1
+  fi
+  
+  if [[ $1 == *$VERSION_20C ]]; then
+    GUESSED_VERSION="2.0"
+    KNOWN_VERSION=1
+  fi
+  
   if [[ $1 == *$VERSION_21 ]]; then
     GUESSED_VERSION="2.1"
     KNOWN_VERSION=1
   fi
   
   if [[ $1 == *$VERSION_21B ]]; then
+    GUESSED_VERSION="2.1"
+    KNOWN_VERSION=1
+  fi
+  
+  if [[ $1 == *$VERSION_21C ]]; then
+    GUESSED_VERSION="2.1"
+    KNOWN_VERSION=1
+  fi
+  
+  if [[ $1 == *$VERSION_21D ]]; then
+    GUESSED_VERSION="2.1"
+    KNOWN_VERSION=1
+  fi
+  
+   if [[ $1 == *$VERSION_21E ]]; then
     GUESSED_VERSION="2.1"
     KNOWN_VERSION=1
   fi
@@ -470,11 +533,39 @@ Debug "Get_Branch_From_Version"
     GUESSED_VERSION="2.2"
     KNOWN_VERSION=1
   fi
-  if [[ $1 == *$VERSION_23 ]]; then
-    GUESSED_VERSION="2.3"
+  if [[ $1 == *$VERSION_22C ]]; then
+    GUESSED_VERSION="2.2"
     KNOWN_VERSION=1
   fi
-  
+  if [[ $1 == *$VERSION_22D ]]; then
+    GUESSED_VERSION="2.2"
+    KNOWN_VERSION=1
+  fi
+  if [[ $1 == *$VERSION_22E ]]; then
+    GUESSED_VERSION="2.2"
+    KNOWN_VERSION=1
+  fi
+  if [[ $1 == *$VERSION_22F ]]; then
+    GUESSED_VERSION="2.2"
+    KNOWN_VERSION=1
+  fi
+  if [[ $1 == *$VERSION_30 ]]; then
+    GUESSED_VERSION="3.0"
+    KNOWN_VERSION=1
+  fi
+    if [[ $1 == *$VERSION_30B ]]; then
+    GUESSED_VERSION="3.0"
+    KNOWN_VERSION=1
+  fi
+    if [[ $1 == *$VERSION_30C ]]; then
+    GUESSED_VERSION="3.0"
+    KNOWN_VERSION=1
+  fi
+    if [[ $1 == *$VERSION_30D ]]; then
+    GUESSED_VERSION="3.0"
+    KNOWN_VERSION=1
+  fi
+
  #if [[ $GUESSED_VERSION == $CURRENT_MASTER ]]; then
  #   GUESSED_VERSION="$GUESSED_VERSION - Master"
   #fi
@@ -541,6 +632,93 @@ function Get_Device_Type { #Get the device type from the device and convert it i
   Debug "Guessed Device: $GUESSED_DEVICE"
 }
 
+function Detect_Flame_Firmware {
+adb wait-for-device &&
+DETECTED_FIRMWARE=`adb shell getprop ro.bootloader`
+
+FLAME_v10E_0='B1TC000110E0'
+FLAME_v10F_3='B1TC300110F0'
+FLAME_v10H_4='B1TC400110H0'
+FLAME_v10G_2='B1TC200110G0'
+FLAME_v121_2='B1TC20011210'
+FLAME_v122_0='B1TC00011220'
+FLAME_v123='B1TC00011230'
+FLAME_v123a='L1TC00011230'
+FLAME_v180='L1TC10011800'
+FLAME_v184='L1TC00011840'
+FLAME_v188='L1TC00011880'
+FLAME_v188_1='L1TC10011880'
+FLAME_v18D='L1TC000118D0'
+FLAME_v18D_1='L1TC100118D0'
+FLAME_v18D_nighty_v2='L1TC000118D0'
+
+if [[ $DETECTED_FIRMWARE == *$FLAME_v10G_2* ]]; then
+  DEFAULT_FIRMWARE="v10G-2"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v121_2* ]]; then
+  DEFAULT_FIRMWARE="v121-2"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v122_0* ]]; then
+  DEFAULT_FIRMWARE="v122"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v10H_4* ]]; then
+  DEFAULT_FIRMWARE="v10H-4"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v10F_3* ]]; then
+  DEFAULT_FIRMWARE="v10F-3"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v10E_0* ]]; then
+  DEFAULT_FIRMWARE="v10E"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v123* ]]; then
+  DEFAULT_FIRMWARE="v123"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v123a* ]]; then
+  DEFAULT_FIRMWARE="v123"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v180* ]]; then
+  DEFAULT_FIRMWARE="v180"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v184* ]]; then
+  DEFAULT_FIRMWARE="v184"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v188* ]]; then
+  DEFAULT_FIRMWARE="v188"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v188_1* ]]; then
+  DEFAULT_FIRMWARE="v188-1"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v18D* ]]; then
+echo "are you on v18D or v18D_nightly_v2"
+read WHICH_V18D
+  DEFAULT_FIRMWARE="$WHICH_V18D"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v18D_1* ]]; then
+  DEFAULT_FIRMWARE="v18D-1"
+  return 0
+fi
+if [[ $DETECTED_FIRMWARE == *$FLAME_v18D_nightly_v2* ]]; then
+  DEFAULT_FIRMWARE="v18D_nightly_v2"
+  return 0
+fi
+
+DEFAULT_FIRMWARE=$DETECTED_FIRMWARE
+
+return 1
+}
 ###################################################################
 
 
@@ -560,13 +738,19 @@ function Choose_Buri_Firmware { #There is only 1 firmware for Buri, so we just s
 
 function Choose_Flame_Firmware { #Ask the user which flame firmware to use, providing a default
   Debug "Choose_Flame_Firmware"
-  FLAME_FIRMWARE_1="v10E"
-  FLAME_FIRMWARE_2="v10F-3"
-  FLAME_FIRMWARE_3="v10G-2"
-  FLAME_FIRMWARE_4="v121-2"
-  FLAME_FIRMWARE_5="v122"
+  #FLAME_FIRMWARE_1="v10E"
+  #FLAME_FIRMWARE_2="v10F-3"
+  #FLAME_FIRMWARE_3="v10G-2"
+  #FLAME_FIRMWARE_4="v121-2"
+  #FLAME_FIRMWARE_5="v122"
+  #FLAME_FIRMWARE_6="v10H-4"
+  #FLAME_FIRMWARE_7="v18D"
+  #FlAME_FIREWARE_8="v18D_nightly_v2"
+  #                   0      1        2        3        4       5       6      7            8
+  FLAME_FIRMWARE=( "v123" "v122" "v121-2" "v10G-2" "v10F-3" "v10E" "v10H-4" "v18D" "v18D_nightly_v2" )
+  FLAME_FIRMWARE_COUNT=${#FLAME_FIRMWARE[@]}
   
-  DEFAULT_FIRMWARE=$FLAME_FIRMWARE_5
+  Detect_Flame_Firmware #|| DEFAULT_FIRMWARE=$FLAME_FIRMWARE_5
   
   if [ $QUICK -eq 1 ]; then
     FIRMWARE=$DEFAULT_FIRMWARE
@@ -574,14 +758,16 @@ function Choose_Flame_Firmware { #Ask the user which flame firmware to use, prov
   fi
   
   echo -e "Which firmware version? Defaults to ${LBLUE}$DEFAULT_FIRMWARE${RESTORE} if left blank"
-  echo -e "1) $(Is_Def $FLAME_FIRMWARE_5)\n2) $(Is_Def $FLAME_FIRMWARE_4)\n3) $(Is_Def $FLAME_FIRMWARE_3)\n4) $(Is_Def $FLAME_FIRMWARE_2)\n5) $(Is_Def $FLAME_FIRMWARE_1)"
+  local i
+  for (( i=0;i<$FLAME_FIRMWARE_COUNT; i++)); do
+    echo -e "${i}) $(Is_Def ${FLAME_FIRMWARE[${i}]})"
+  done
+  
+  #echo -e "1) $(Is_Def $FLAME_FIRMWARE_5)\n2) $(Is_Def $FLAME_FIRMWARE_4)\n3) $(Is_Def $FLAME_FIRMWARE_3)\n4) $(Is_Def $FLAME_FIRMWARE_2)\n5) $(Is_Def $FLAME_FIRMWARE_1)\n6) $(Is_Def $FLAME_FIRMWARE_6)"
   read FLAME_FIRMWARE_CHOICE
   case $FLAME_FIRMWARE_CHOICE in
-    1) FIRMWARE=$FLAME_FIRMWARE_5;;
-    2) FIRMWARE=$FLAME_FIRMWARE_4 ;;
-    3) FIRMWARE=$FLAME_FIRMWARE_3 ;;
-    4) FIRMWARE=$FLAME_FIRMWARE_2 ;;
-    5) FIRMWARE=$FLAME_FIRMWARE_1 ;;
+    [0-$FLAME_FIRMWARE_COUNT]) FIRMWARE=${FLAME_FIRMWARE[${FLAME_FIRMWARE_CHOICE}]} #Can only handle 0-9
+    ;;
     *) if [ -z $FLAME_FIRMWARE_CHOICE ]; then
           FIRMWARE=$DEFAULT_FIRMWARE   #DEFAULT GOES HERE
        else
@@ -714,11 +900,44 @@ function Choose_Custom_Firmware { #We don't know which device this is, so ask fo
 }
 
 function Get_User_Agent { #Remind the user to get the User Agent string.
-
+if [ $SKIP_UA -eq 0 ]; then
   Debug "Get_User_Agent"
-  echo -e "Please get the ${LBLUE}User Agent${RESTORE} information by going to ${LYELLOW}www.whatsmyuseragent.com on the device${RESTORE} and include it in the bug${RESTORE}"
+  
+  case $GUESSED_DEVICE in
+    'Flame') Get_UA
+    ;;
+    'Buri') Get_UA
+    ;;
+    'Open_C') Get_UA
+    ;;
+    'Tarako') Get_UA_T
+    ;;
+    *) Default_UA
+    ;;
+  esac
+  if [[ -z $USER_AGENT ]]; then
+    Default_UA
+  fi
+  
+fi
 }
 
+function Default_UA {
+  USER_AGENT="Please get the ${LBLUE}User Agent${RESTORE} information by going to ${LYELLOW}www.whatsmyuseragent.com on the device${RESTORE} and include it in the bug${RESTORE}"
+}
+
+function Get_UA_T {
+if [[ $DETECTED_VERSION == *$VERSION_TK ]]; then
+  USER_AGENT="User Agent: Mozilla/5.0 (Mobile; rv:28.1) Gecko/28.1 Firefox/28.1"
+else
+  Default_UA
+fi
+}
+
+function Get_UA {
+  UAV=${DETECTED_VERSION%.*}
+  USER_AGENT="Mozilla/5.0 (Mobile; rv:$UAV.0) Gecko/$UAV.0 Firefox/$UAV.0"
+}
 ####################################################################
 
 ############################OUTPUT##################################
@@ -731,13 +950,13 @@ function Generate_Bug_Template { #Creates the bug template and opens it for the 
   fi
   file_name=$TEMP_DIR/bugtemplate_$(date +%Y%m%d-%H%M%S).txt
   echo -e "Summary (title) Field:" >> $file_name &&
-  echo -e "[B2G][Component][Location](Concise statement of the issue)" >> $file_name &&
+  echo -e "[Component][Location](Concise statement of the issue)" >> $file_name &&
   echo -e "\nDescription:\n(Expand upon the Summary - but not a copy of the Summary!)" >> $file_name &&
   echo -e "\n\nRepro Steps:" >> $file_name &&
   echo -e "1) Update a $DEVICE to $BUILD_ID" >> $file_name &&
   echo -e "2)\n3)\n4)\n\n" >> $file_name &&
   echo -e "Actual:\n(Describe the behavior you actually observed)" >> $file_name &&
-  echo -e "\n\nExpected:\n(Describe the behavior you expected to have observed)\n" >> $file_name &&
+  echo -e "\n\nExpected:\n(Describe the behavior you expected to have observed)\n\n\nNotes:\n" >> $file_name &&
 
   echo -e "Environmental Variables:" >> $file_name &&
 
@@ -745,6 +964,7 @@ function Generate_Bug_Template { #Creates the bug template and opens it for the 
   echo -e "Build ID: $BUILD_ID" >> $file_name &&
   echo -e "Gaia: $GAIA" >> $file_name &&
   echo -e "Gecko: $GECKO" >> $file_name &&
+  echo -e "Gonk: $GONK" >> $file_name &&
   echo -e "Version: $DETECTED_VERSION $VERSION" >> $file_name &&
   
   #if [ $SHOWRIL -eq 1 ]; then
@@ -752,8 +972,8 @@ function Generate_Bug_Template { #Creates the bug template and opens it for the 
   #fi
 
   echo -e "Firmware Version:" $FIRMWARE >> $file_name &&
-  echo -e "\nUser Agent: (Obtain this by going to www.whatsmyuseragent.com on the device browser)" >> $file_name &&
-  echo -e "\n\nKeywords:\n\n\nNotes:\n\n\nRepro frequency: (2/3, 100%, etc.)\nLink to failed test case:\nSee attached: (screenshot, video clip, logcat, etc.)" >> $file_name &&
+  echo -e "User Agent: $USER_AGENT" >> $file_name &&
+  echo -e "\n\nUser Impact:\n\n\nRepro frequency: (2/3, 100%, etc.)\nLink to failed test case:\nSee attached: (screenshot, video clip, logcat, etc.)" >> $file_name &&
 
   $TEXT_APP $file_name &
 }
@@ -783,18 +1003,17 @@ if [ $SIMPLE -eq 0 ]; then
   echo -e "Device: ${LBLUE}$DEVICE $VERSION_2${RESTORE}"
   echo -e "BuildID: ${LBLUE}$BUILD_ID${RESTORE}"
 fi
-  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}\nGecko: ${LBLUE}$GECKO${RESTORE}"
+  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}"
+  echo -e "Gecko: ${LBLUE}$GECKO${RESTORE}"
+  echo -e "Gonk: ${LBLUE}$GONK${RESTORE}"
 if [ $SIMPLE -eq 0 ]; then
   echo -e "Version: ${LBLUE}$DETECTED_VERSION $VERSION ${RESTORE}"
-  echo -e "Firmware Version: ${LBLUE}$FIRMWARE${RESTORE}"
+  echo -e "${LYELLOW}Firmware Version: ${LBLUE}$FIRMWARE${RESTORE}"
+  echo -e "${LYELLOW}User Agent: ${LBLUE}$USER_AGENT${RESTORE}"
   echo -e "--------------------------------------------------"
+  echo -e "${LYELLOW}Please note that the Firmware Version and User Agent should be verified.${RESTORE}"
 fi
 
-if [ $SIMPLE -eq 0 ]; then
-  if [ $QUICK -eq 1 ]; then
-    echo -e "${LYELLOW}Please note that the firmware version is NOT auto detected.${RESTORE}"
-  fi
-fi
 }
 
 function Print_Info_From_Directory { #Print the info we got from the build directory
@@ -806,7 +1025,8 @@ function Print_Info_From_Directory { #Print the info we got from the build direc
     echo -e "Environmental Variables"
     echo -e "BuildID: ${LBLUE}$BUILD_ID${RESTORE}"
   fi
-  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}\nGecko: ${LBLUE}$GECKO${RESTORE}"
+  echo -e "Gaia: ${LBLUE}$GAIA${RESTORE}"
+  echo -e "Gecko: ${LBLUE}$GECKO${RESTORE}"
   if [ $SIMPLE -eq 0 ]; then
     echo -e "Version: ${LBLUE}$DETECTED_VERSION ($GUESSED_VERSION)${RESTORE}"
     echo -e "--------------------------------------------------"
@@ -822,21 +1042,24 @@ function Print_Info_From_Directory { #Print the info we got from the build direc
 
 function Get_Vars_From_Device { #Run the commands to get variables from a device
 
+
   DIR=$TEMP_DIR
   Start_ADB
+  adb pull '/system/sources.xml' sources &> /dev/null && get_source || (echo "error pulling gonk" && GONK="Cannot pull sources file. Did you Shallow Flash?")
   Pull_ApplicationZip_From_Device
   Pull_ApplicationINI_From_Device 
   Get_Device_Type
   Choose_Device
   Get_Firmware_From_Device_Name
     Main
-  Print_Full_Info
   Get_User_Agent
+  Print_Full_Info
   Generate_Bug_Template
 
 }
 
 function Get_Vars_From_Folder { #Run the commands to get variables from a given directory
+
 
     Find_Build_Location
     Extract_ApplicationINI_From_B2GTar
@@ -848,6 +1071,7 @@ function Get_Vars_From_Folder { #Run the commands to get variables from a given 
 }
 
 function Main { #Run the commands common to both options above
+
   Get_Gaia_Version_From_Commitfile
   Get_Gecko_Version_From_ApplicationINI
   Get_BuildID_From_ApplicationINI
@@ -861,5 +1085,8 @@ Init_Variables &&
 Get_Args "$@"
 Do_Clear
 Choose_Work_Path
+
+
+
 
 
