@@ -8,7 +8,10 @@
 # Previous change: Added a note that the firmware version is not
 # auto detected. Minor formatting changes.
 # Last changes: Added the current firmware and updated the rest of
-# the script to the best of my knowledge 
+# the script to the best of my knowledge, there is a section in
+# flame firmware that if anyone wants to improove please do its set
+# as a read currently would like to see it as a switch but couldnt
+# get it to work right
 
 ###################################################################
 
@@ -698,7 +701,9 @@ if [[ $DETECTED_FIRMWARE == *$FLAME_v188_1* ]]; then
   return 0
 fi
 if [[ $DETECTED_FIRMWARE == *$FLAME_v18D* ]]; then
-  DEFAULT_FIRMWARE="v18D"
+echo "are you on v18D or v18D_nightly_v2"
+read WHICH_V18D
+  DEFAULT_FIRMWARE="$WHICH_V18D"
   return 0
 fi
 if [[ $DETECTED_FIRMWARE == *$FLAME_v18D_1* ]]; then
